@@ -78,3 +78,22 @@ a.nav-link {
 .desc-w-pic {
     width: 60%;
 }
+
+.desc_block {
+    display: flex;
+    height: 100px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    column-gap: 5px;
+    background-color: peachpuff;
+}
+.paragraph_desc {
+    width: calc(100% - 100px);
+    background-color: gray;
+}
+.picture_desc {
+    width: 100px;
+    background-color: black;
+}
