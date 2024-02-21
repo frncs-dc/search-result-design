@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINGBING</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+
+            <div class="logo">
+                <img src="bing-logo.png" alt="Bing">
+            </div>
+
+            <div class="search-bar">
+                <form action="#" method="GET">
+
+                    <input type="text" name="q" placeholder="Search Bing">
+                    <button type="submit">Search</button>
+
+                </form>
+            </div>
+
+        </header>
+        
+    </div>
+</body>
+</html>
+
+<script>
+    fetch('sample.json')
+      .then(response => response.json())
+      .then(data => {
+        // Randomize the data
+        data.results.sort(() => Math.random() - 0.5);
+    
+        // Randomize the number of results
+        const numResults = Math.floor(Math.random() * data.results.length) + 1;
+        
+        // Make defensive copy of original array (numResults)
+        const results = data.results.slice(0, numResults);
+    
+        // Get the container
+        const container = document.querySelector('.container');
+    
+        // Add the randomized data to the container (loops through all results)
+        results.forEach(result => {
+    
+        const section = document.createElement('section');
+        section.className = 'search-results';
+
+        const div = document.createElement('div');
+        div.className = 'result-card';
+
+        const h3 = document.createElement('h3');
+        const a = document.createElement('a');
+    
+        // the href of the anchor
+        a.href = '#';
+          // the caption of the anchor
+        a.textContent = result.name;
+        
+        h3.appendChild(a);
+        div.appendChild(h3);
+        
+        //div_descblock.appendChild(div_picdesc);
+        
+
+        if (Math.random() < 0.5) {
+            result.features.forEach(feature => {
+                // Randomize whether the feature is displayed as a list item or a paragraph
+                
+                    
+                const ul = document.createElement('ul');
+                const li = document.createElement('li');
+                li.textContent = feature;
+                ul.appendChild(li);
+                div.appendChild(ul);
+                });
+            }
+    
+            else{
+                result.features.forEach(feature => {
+                    // Randomize whether the feature is displayed as a list item or a paragraph
+                    const p = document.createElement('p');
+                    p.textContent = feature;
+
+                    let div_block = document.createElement('div');
+                    div_block.className = 'desc_block';
+
+                    let div_para = document.createElement('div');
+                    div_para.className = 'paragraph_desc';
+
+                    div_block.appendChild(div_para);
+                    div.appendChild(div_block);
+                    div_para.appendChild(p);
+
+                    // Randomize whether the paragraph has a picture
+                    if (Math.random() < 0.5) {
+                        let div_pic = document.createElement('div');
+                        div_pic.className = 'picture_desc';
+
+                        let img = document.createElement('img');
+                        img.src = result.image;
+                        div_pic.appendChild(img);
+
+                        div_block.appendChild(div_pic);
+                    }
+                });
+            }
+    
+        section.appendChild(div);
+        container.appendChild(section);//
+        });
+    })
+    .catch(error => console.error('Error:', error));
+    </script>
