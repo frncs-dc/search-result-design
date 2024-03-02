@@ -9,13 +9,20 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+}
+
+section {
+    border: 1px red solid;
+    max-height: 30%;
 }
 
 .logo img {
@@ -25,7 +32,6 @@ header {
 
 .search-bar {
     flex-grow: 1;
-    margin-left: 20px;
     max-width: 500px;
 }
 

@@ -1,0 +1,36 @@
+:root {
+    --link-title: #4D25AE;
+}
+/* lets the body only have occupy the whole screen (viewport) */
+html, body {
+    height: 100vh;
+    width: 100vw;
+}
+
+/* makes the search result height take up only 30% of the search result container */
+.search-container{
+    height: 30%;
+}
+
+/* adjust the color, font-size and removes the underline of the search result */
+.search-title{
+    color: var(--link-title);
+    font-size: 20px;
+    text-decoration: none;
+}
+
+/* when on hover, the search result underline appears */
+.search-title:hover {
+    text-decoration: underline;
+}
+
+/* changes the font-size of the search-result-description */
+.search-description{
+    font-size: 16px;
+}
+
+/* changes the image size of the search-result-description */
+.desc-pic{
+    width: 100px;
+    height: auto;
+}
