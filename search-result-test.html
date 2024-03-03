@@ -55,88 +55,89 @@
             ulTab.id = 'myTab';
             ulTab.role = 'tablist';
 
-        // Create the div for the tab content
-        const divTabContent = document.createElement('div');
-        divTabContent.className = 'tab-content';
+            // Create the div for the tab content
+            const divTabContent = document.createElement('div');
+            divTabContent.className = 'tab-content';
 
-        // Iterate over all tabs
-        result.description.tab.tabs.forEach((tab, index) => {
-            // Create the tab
-            const liTab = document.createElement('li');
-            liTab.className = 'nav-item';
-            liTab.role = 'presentation';
-            const aTab = document.createElement('a');
-            aTab.className = 'nav-link' + (index === 0 ? ' active' : '');
-            aTab.id = 'tab-' + index;
-            aTab.setAttribute('data-bs-toggle', 'tab');
-            aTab.href = '#content-' + index;
-            aTab.role = 'tab';
-            aTab.textContent = tab.title;
-            liTab.appendChild(aTab);
-            ulTab.appendChild(liTab);
+            // Iterate over all tabs
+            result.description.tab.tabs.forEach((tab, index) => {
+                // Create the tab
+                const liTab = document.createElement('li');
+                liTab.className = 'nav-item';
+                liTab.role = 'presentation';
+                const aTab = document.createElement('a');
+                aTab.className = 'nav-link' + (index === 0 ? ' active' : '');
+                aTab.id = 'tab-' + index;
+                aTab.setAttribute('data-bs-toggle', 'tab');
+                aTab.href = '#content-' + index;
+                aTab.role = 'tab';
+                aTab.textContent = tab.title;
+                liTab.appendChild(aTab);
+                ulTab.appendChild(liTab);
 
-            // Create the tab content
-            const divTabPane = document.createElement('div');
-            divTabPane.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
-            divTabPane.id = 'content-' + index;
-            divTabPane.role = 'tabpanel';
-            divTabPane.setAttribute('aria-labelledby', 'tab-' + index);
+                // Create the tab content
+                const divTabPane = document.createElement('div');
+                divTabPane.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
+                divTabPane.id = 'content-' + index;
+                divTabPane.role = 'tabpanel';
+                divTabPane.setAttribute('aria-labelledby', 'tab-' + index);
 
-            const pTabContent = document.createElement('p');
-            pTabContent.textContent = tab.content;
-            divTabPane.appendChild(pTabContent);
+                const pTabContent = document.createElement('p');
+                pTabContent.textContent = tab.content;
+                divTabPane.appendChild(pTabContent);
 
-            divTabContent.appendChild(divTabPane);
-        });
+                divTabContent.appendChild(divTabPane);
+            });
 
-        divTab.appendChild(ulTab);
-        divTab.appendChild(divTabContent);
-    
-        // Create sections for paragraph, list, and tab
-        const sections = [p, ulList, divTab,];
-        const descriptionTypes = [paragraph.title, result.description.list.title, result.description.tab.title];
-        sections.forEach((section, index) => {
-            const div = document.createElement('div');
-            div.className = 'card p-3 search-container border mb-2';
+            divTab.appendChild(ulTab);
+            divTab.appendChild(divTabContent);
+        
+            // Create sections for paragraph, list, and tab
+            const sections = [p, ulList, divTab,];
+            const descriptionTypes = [paragraph.title, result.description.list.title, result.description.tab.title];
+            sections.forEach((section, index) => {
+                const div = document.createElement('div');
+                div.className = 'card p-3 search-container border mb-2';
 
-            const h3 = document.createElement('h3');
-            const a = document.createElement('a');
-            a.className = 'search-title';
-            a.href = '#';
-            a.textContent = descriptionTypes[index]; // Set the title according to the description type
+                const h3 = document.createElement('h3');
+                const a = document.createElement('a');
+                a.className = 'search-title';
+                a.href = '#';
+                a.textContent = descriptionTypes[index]; // Set the title according to the description type
 
-            h3.appendChild(a);
-            div.appendChild(h3);
-            div.appendChild(section);
+                h3.appendChild(a);
+                div.appendChild(h3);
+                div.appendChild(section);
 
-            // Randomize the picture presence for the first set, then complement it for the next set
-            if (prevPicturePresence[index] === null) {
-                if (Math.random() < 0.5) {
+                // Randomize the picture presence for the first set, then complement it for the next set
+                if (prevPicturePresence[index] === null) {
+                    if (Math.random() < 0.5) {
+                        appendPicture(div, result.image);
+                        prevPicturePresence[index] = true;
+                    } else {
+                        prevPicturePresence[index] = false;
+                    }
+                } else if (prevPicturePresence[index]) {
+                    prevPicturePresence[index] = false;
+                } else {
                     appendPicture(div, result.image);
                     prevPicturePresence[index] = true;
-                } else {
-                    prevPicturePresence[index] = false;
                 }
-            } else if (prevPicturePresence[index]) {
-                prevPicturePresence[index] = false;
-            } else {
-                appendPicture(div, result.image);
-                prevPicturePresence[index] = true;
-            }
 
-            container.appendChild(div);
-        });
-
-        // When the anchor is clicked, display the next data
-        const anchors = document.querySelectorAll('.search-title');
-        anchors.forEach(anchor => {
-            anchor.addEventListener('click', (event) => {
-                event.preventDefault();
-                currentIndex = (currentIndex + 1) % data.results.length;
-                displayData();
+                container.appendChild(div);
             });
-        });
 
+            // When the anchor is clicked, display the next data
+            const anchors = document.querySelectorAll('.search-title');
+            anchors.forEach(anchor => {
+                anchor.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    currentIndex = (currentIndex + 1) % data.results.length;
+                    displayData();
+                });
+            });
+
+            // Initialize Bootstrap tabs
             var tabList = document.querySelectorAll('[data-bs-toggle="tab"]');
             var tabListArray = [].slice.call(tabList);
             tabListArray.map(function (tab) {
@@ -144,6 +145,7 @@
             });
         }
     
+        // Function to append picture to a div
         function appendPicture(div, imageSrc) {
             let img = document.createElement('img');
             img.src = imageSrc;
@@ -151,6 +153,7 @@
             div.appendChild(img);
         }
     
+        // Fetch data from JSON file
         fetch('../sample.json')
         .then(response => response.json())
         .then(fetchedData => {
