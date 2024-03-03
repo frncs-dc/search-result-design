@@ -13,62 +13,154 @@
         <div class="rounded-5 border w-75 ps-3 py-2 mb-2">slkds</div>
         <button type="submit">Search</button>
     </div>
-
-    <div class="border d-flex flex-column flex-grow-1">
-        <div class="card p-3 search-container border mb-2">
-            <a class="search-title">www.example.com/result1</a>
-            <div class="search-description d-flex d-inline-flex">
-                <div>
-                    <ul>
-                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                        <li>Nulla nec purus feugiat, vestibulum risus ac, volutpat justo.</li>
-                        <li>Etiam vehicula augue non faucibus sodales.</li>
-                    </ul>
-                </div>
-                <img src="pictures\samplechicken.jpg" class="rounded ms-auto d-block img-fluid desc-pic">
-            </div>
-        </div>
-
-        <div class="card p-3 search-container border mb-2">
-            <a class="search-title">www.example.com/result3</a>
-            <div class="search-description d-flex d-inline-flex">
-                <div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                    mollit anim id est laborum.
-                </div>
-                <img src="pictures\samplechicken.jpg" class="rounded ms-auto d-block img-fluid desc-pic">
-            </div>
-        </div>
-
-        <div class="card p-3 search-container border mb-2">
-            <a class="search-title">www.example.com/result1</a>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Tab 1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Tab 2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Tab 3</a>
-                </li>
-            </ul>
-            <div class="search-description d-inline-flex">
-                <div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </div>
-                <img src="pictures\samplechicken.jpg" class="rounded ms-auto d-block img-fluid desc-pic">
-            </div>
-        </div>
+    <div class="results-container border d-flex flex-column flex-grow-1"></div>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+    <script>
+        let currentIndex = 0;
+        let data;
+        let prevPicturePresence = [null, null, null]; // Initial picture presence for paragraph, list, tab
+    
+        function displayData() {
+            // Clear the container
+            const container = document.querySelector('.results-container');
+            container.innerHTML = '';
+    
+            // Get the data at the current index
+            const result = data.results[currentIndex];
+    
+            
+
+            // Randomly select one paragraph
+            const paragraph = result.description.paragraph;
+            const p = document.createElement('div');
+            p.textContent = paragraph.content;
+    
+            // Create a ul for the list
+            const ulList = document.createElement('ul');
+            // Iterate over all list items
+            result.description.list.items.forEach(listItem => {
+                const liList = document.createElement('li');
+                liList.textContent = listItem;
+                ulList.appendChild(liList);
+            });
+    
+            // Create a div for the tabs and tab content
+            const divTab = document.createElement('div');
+
+            // Create the list of tabs
+            const ulTab = document.createElement('ul');
+            ulTab.className = 'nav nav-tabs';
+            ulTab.id = 'myTab';
+            ulTab.role = 'tablist';
+
+        // Create the div for the tab content
+        const divTabContent = document.createElement('div');
+        divTabContent.className = 'tab-content';
+
+        // Iterate over all tabs
+        result.description.tab.tabs.forEach((tab, index) => {
+            // Create the tab
+            const liTab = document.createElement('li');
+            liTab.className = 'nav-item';
+            liTab.role = 'presentation';
+            const aTab = document.createElement('a');
+            aTab.className = 'nav-link' + (index === 0 ? ' active' : '');
+            aTab.id = 'tab-' + index;
+            aTab.setAttribute('data-bs-toggle', 'tab');
+            aTab.href = '#content-' + index;
+            aTab.role = 'tab';
+            aTab.textContent = tab.title;
+            liTab.appendChild(aTab);
+            ulTab.appendChild(liTab);
+
+            // Create the tab content
+            const divTabPane = document.createElement('div');
+            divTabPane.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
+            divTabPane.id = 'content-' + index;
+            divTabPane.role = 'tabpanel';
+            divTabPane.setAttribute('aria-labelledby', 'tab-' + index);
+
+            const pTabContent = document.createElement('p');
+            pTabContent.textContent = tab.content;
+            divTabPane.appendChild(pTabContent);
+
+            divTabContent.appendChild(divTabPane);
+        });
+
+        divTab.appendChild(ulTab);
+        divTab.appendChild(divTabContent);
+    
+        // Create sections for paragraph, list, and tab
+        const sections = [p, ulList, divTab,];
+        const descriptionTypes = [paragraph.title, result.description.list.title, result.description.tab.title];
+        sections.forEach((section, index) => {
+            const div = document.createElement('div');
+            div.className = 'card p-3 search-container border mb-2';
+
+            const h3 = document.createElement('h3');
+            const a = document.createElement('a');
+            a.className = 'search-title';
+            a.href = '#';
+            a.textContent = descriptionTypes[index]; // Set the title according to the description type
+
+            h3.appendChild(a);
+            div.appendChild(h3);
+            div.appendChild(section);
+
+            // Randomize the picture presence for the first set, then complement it for the next set
+            if (prevPicturePresence[index] === null) {
+                if (Math.random() < 0.5) {
+                    appendPicture(div, result.image);
+                    prevPicturePresence[index] = true;
+                } else {
+                    prevPicturePresence[index] = false;
+                }
+            } else if (prevPicturePresence[index]) {
+                prevPicturePresence[index] = false;
+            } else {
+                appendPicture(div, result.image);
+                prevPicturePresence[index] = true;
+            }
+
+            container.appendChild(div);
+        });
+
+        // When the anchor is clicked, display the next data
+        const anchors = document.querySelectorAll('.search-title');
+        anchors.forEach(anchor => {
+            anchor.addEventListener('click', (event) => {
+                event.preventDefault();
+                currentIndex = (currentIndex + 1) % data.results.length;
+                displayData();
+            });
+        });
+
+            var tabList = document.querySelectorAll('[data-bs-toggle="tab"]');
+            var tabListArray = [].slice.call(tabList);
+            tabListArray.map(function (tab) {
+                return new bootstrap.Tab(tab);
+            });
+        }
+    
+        function appendPicture(div, imageSrc) {
+            let img = document.createElement('img');
+            img.src = imageSrc;
+            img.className = 'rounded ms-auto d-block img-fluid desc-pic';
+            div.appendChild(img);
+        }
+    
+        fetch('../sample.json')
+        .then(response => response.json())
+        .then(fetchedData => {
+            data = fetchedData;
+            // Randomize the order of results
+            data.results.sort(() => Math.random() - 0.5);
+            // Initially display the first data
+            displayData();
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+    </body>
 </html>
