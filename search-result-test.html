@@ -14,7 +14,7 @@
         <button type="submit">Search</button>
     </div>
     <div class="results-container border d-flex flex-column flex-grow-1"></div>
-
+        <button id="downloadData">Download Data</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
@@ -23,7 +23,8 @@
         let data;
         let clickCounters = {}; // Counters object for keeping track of clicks
         let prevPicturePresence = [null, null, null]; // Initial picture presence for paragraph, list, tab
-
+        let timeCounters = {};
+        
         function displayData() {
             // Clear the container
             const container = document.querySelector('.results-container');
@@ -128,6 +129,9 @@
                 container.appendChild(div);
             });
 
+            let loadTime = performance.now();
+            
+
             // When the anchor is clicked, display the next data
             const anchors = document.querySelectorAll('.search-title');
 
@@ -182,7 +186,44 @@
                     console.log(`Click count for ${key3}: ${clickCounters[key3]}`);
                     console.log(`Click count for ${key4}: ${clickCounters[key4]}`);
                     screens++;
-                    console.log(screens);
+
+                    // Calculate the time taken
+                    let clickTime = performance.now();
+                    let timeTaken = clickTime - loadTime;
+
+                    // Create a key for the counters object
+                    const tkey = `${resultId}-${actualDescriptionType}-${photoPresence}`;
+                    const tkey2 = `${actualDescriptionType}-${photoPresence}`;
+                    const tkey3 = `${actualDescriptionType}`;
+                    const tkey4 = `${photoPresence}`;
+
+                    // If the counter for this key doesn't exist yet, initialize it
+                    if (!timeCounters[tkey]) {
+                        timeCounters[tkey] = 0;
+                    }
+                    if (!timeCounters[tkey2]) {
+                        timeCounters[tkey2] = 0;
+                    }
+                    if (!timeCounters[tkey3]) {
+                        timeCounters[tkey3] = 0;
+                    }
+                    if (!timeCounters[tkey4]) {
+                        timeCounters[tkey4] = 0;
+                    }
+
+                    // Add the time taken to the counterst
+                    timeCounters[tkey] += timeTaken;
+                    timeCounters[tkey2] += timeTaken;
+                    timeCounters[tkey3] += timeTaken;
+                    timeCounters[tkey4] += timeTaken;
+
+                    // Log the current time taken
+                    console.log(`Time taken for ${tkey}: ${timeCounters[tkey]} ms`);
+                    console.log(`Time taken for ${tkey2}: ${timeCounters[tkey2]} ms`);
+                    console.log(`Time taken for ${tkey3}: ${timeCounters[tkey3]} ms`);
+                    console.log(`Time taken for ${tkey4}: ${timeCounters[tkey4]} ms`);
+                    // Reset the load time
+                    loadTime = performance.now();
                 });
             });
 
@@ -202,6 +243,32 @@
             img.className = 'rounded ms-auto d-block img-fluid desc-pic';
             div.appendChild(img);
         }
+        document.getElementById('downloadData').addEventListener('click', () => {
+            // Combine clickCounters and timeCounters into one object
+            const data = {
+                clickCounters: clickCounters,
+                timeCounters: timeCounters
+            };
+
+            // Convert the data to JSON
+            const json = JSON.stringify(data, null, 2);
+
+            // Create a blob from the JSON
+            const blob = new Blob([json], {type: 'application/json'});
+
+            // Create a link element
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'data.json';
+
+            // Append the link to the body and click it to start the download
+            document.body.appendChild(link);
+            link.click();
+
+            // Remove the link after the download starts
+            document.body.removeChild(link);
+        });
     
         // Fetch data from JSON file
         fetch('../sample.json')
