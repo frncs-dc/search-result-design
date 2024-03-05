@@ -10,7 +10,7 @@
   <body class="p-2 d-flex flex-column">
     
     <div class="search-bar d-flex flex-row mb-3">
-        <div class="rounded-5 border w-75 ps-3 py-2 mb-2">Pogi Si Leeroi</div>
+        <div id="search-result-title" class="rounded-5 border w-75 ps-3 py-2 mb-2">Pogi Si Leeroi</div>
         <button type="submit">Search</button>
     </div>
     <div class="results-container border d-flex flex-column flex-grow-1"></div>
@@ -126,6 +126,12 @@
     
             // Get the data at the current index
             const result = data.results[currentIndex];
+
+            // Get the search result title element
+            const searchResultTitle = document.getElementById('search-result-title');
+
+            // Set the title
+            searchResultTitle.textContent = result.title;
 
             // Select one paragraph
             const paragraph = result.description.paragraph;
