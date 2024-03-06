@@ -173,60 +173,71 @@
                 ulList.appendChild(liList);
             });
     
-            // Create a div for the tabs and tab content
+            // Create a div for the tabs and tab contents
             const divTab = document.createElement('div');
-
             // Create the list of tabs
             const ulTab = document.createElement('ul');
+            // Doing this essentially assigns a bootstrap class to the unordered list ulTab
+            // These are just styles
             ulTab.className = 'nav nav-tabs';
-            ulTab.id = 'myTab';
-            ulTab.role = 'tablist';
-
             // Create the div for the tab content
             const divTabContent = document.createElement('div');
             divTabContent.className = 'tab-content col-9';
-
             // Iterate over all tabs
             result.description.tab.tabs.forEach((tab, index) => {
                 // Create the tab
                 const liTab = document.createElement('li');
+                // Bootstrap class for the list item
                 liTab.className = 'nav-item';
-                liTab.role = 'presentation';
                 const aTab = document.createElement('a');
+                // Bootstrap class for the anchor and 
+                // checks if index is equal to 0. If index is 0, it returns the string ' active'.
+                // If index is not 0, it returns an empty string ''.
+                // This sets the first tab as active
                 aTab.className = 'nav-link' + (index === 0 ? ' active' : '');
-                aTab.id = 'tab-' + index;
                 aTab.setAttribute('data-bs-toggle', 'tab');
+                // This sets the href of the anchor.
                 aTab.href = '#content-' + index;
-                aTab.role = 'tab';
+                aTab.id = 'tab-' + index;
+                // This sets the text of the anchor for tab to the title of the tab.
                 aTab.textContent = tab.title;
                 liTab.appendChild(aTab);
                 ulTab.appendChild(liTab);
-
                 // Create the tab content
                 const divTabPane = document.createElement('div');
+                // This sets the class of the div for the Tab. If index is 0, it essentially
+                // shows the contents, otherwise, it doesn't.
                 divTabPane.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
                 divTabPane.id = 'content-' + index;
-                divTabPane.role = 'tabpanel';
-                divTabPane.setAttribute('aria-labelledby', 'tab-' + index);
 
+                divTabPane.setAttribute('aria-labelledby', 'tab-' + index);
                 const pTabContent = document.createElement('p');
+
                 pTabContent.textContent = tab.content;
                 divTabPane.appendChild(pTabContent);
-
                 divTabContent.appendChild(divTabPane);
+                // ex:
+                // <div id="divTabContent">
+                //     <div id="divTabPane">
+                //         <p id="pTabContent">
+                //         <!-- tab.content -->
+                //         </p>
+                //     </div>
+                // </div>
             });
 
+            // Adds the unordered list to the main div (container) for tabs
             divTab.appendChild(ulTab);
             divTab.appendChild(divTabContent);
         
-            // Create sections for paragraph, list, and tab
+            // Array of the sections
             const sections = [p, ulList, divTab,];
-            const descriptionTypes = [paragraph.title, result.description.list.title, result.description.tab.title];
-            const actualDescriptionTypes = [paragraph.type, result.description.list.type, result.description.tab.type]
+            const descriptionTitles = [paragraph.title, result.description.list.title, result.description.tab.title];
+            const descriptionTypes = [paragraph.type, result.description.list.type, result.description.tab.type]
             
             // Create an array of objects, where each object contains a section and its corresponding description type
             const sectionObjects = sections.map((section, index) => {
-                return { section: section, descriptionType: actualDescriptionTypes[index] };
+                return { section: section, descriptionType: descriptionTypes[index] };
             });
 
             // Shuffle the array of objects
@@ -234,7 +245,7 @@
 
             // Extract the shuffled sections and description types from the array of objects
             const shuffledSections = sectionObjects.map(object => object.section);
-            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
+            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionTitles);
 
             shuffledSections.forEach((section, index) => {
                 const div = document.createElement('div');
@@ -252,7 +263,7 @@
                 const a = document.createElement('a');
                 a.className = 'search-title';
                 a.href = '#';
-                a.textContent = descriptionTypes[sections.indexOf(shuffledSections[index])]; // Set the title according to the description type // Set the title according to the description type
+                a.textContent = descriptionTitles[sections.indexOf(shuffledSections[index])]; // Set the title according to the description type // Set the title according to the description type
 
                 h3.appendChild(a);
                 contentDiv.appendChild(h3); // Append the anchor to the content div
@@ -293,16 +304,16 @@
             
                     // Get the result id and description type
                     const resultId = data.results[currentIndex].id;
-                    const actualDescriptionType = shuffledDescriptionTypes[index];
+                    const descriptionTypes = shuffledDescriptionTypes[index];
                     const photoPresence = !prevPicturePresence[index];
             
                     // Create a key for the counters object
                     //key1 is for each specific topic's result layout combination
-                    const key = `${resultId}-${actualDescriptionType}-${photoPresence}`;
+                    const key = `${resultId}-${descriptionTypes}-${photoPresence}`;
                     //key2 is for each result layout combination, regardless of topic
-                    const key2 = `${actualDescriptionType}-${photoPresence}`;
+                    const key2 = `${descriptionTypes}-${photoPresence}`;
                     //key2 is for each description type, regardless of photo presence and topic
-                    const key3 = `${actualDescriptionType}`;
+                    const key3 = `${descriptionTypes}`;
                     //key2 is for the photo presence, regardless of topic and description type
                     const key4 = `${photoPresence}`;
             
@@ -331,9 +342,9 @@
                     let timeTaken = clickTime - loadTime;
 
                     // Create a key for the counters object
-                    const tkey = `${resultId}-${actualDescriptionType}-${photoPresence}`;
-                    const tkey2 = `${actualDescriptionType}-${photoPresence}`;
-                    const tkey3 = `${actualDescriptionType}`;
+                    const tkey = `${resultId}-${descriptionTypes}-${photoPresence}`;
+                    const tkey2 = `${descriptionTypes}-${photoPresence}`;
+                    const tkey3 = `${descriptionTypes}`;
                     const tkey4 = `${photoPresence}`;
 
                     // If the counter for this key doesn't exist yet, initialize it
@@ -394,6 +405,7 @@
             div.appendChild(imgContainer); // Append the container to the div
         }
         
+        // DEFERRED, IGNORE
         document.getElementById('downloadData').addEventListener('click', () => {
             // Convert the data to CSV
             let csv = 'data:text/csv;charset=utf-8,';
@@ -410,6 +422,8 @@
             document.body.appendChild(link);
             link.click();
         });
+
+
         data.results.sort(() => Math.random() - 0.5);
         displayData();
 
@@ -458,7 +472,7 @@
             for (let key in clickCounters) {
                 const [resultId, descriptionType, photoPresence] = key.split('-');
                 const result = data.results.find(result => result.id === resultId);
-                const section = sections.find((section, index) => actualDescriptionTypes[index] === descriptionType);
+                const section = sections.find((section, index) => descriptionTypes[index] === descriptionType);
                 if (clickCounters[key] > 0) {
                     appendSection(result, section);
                 }
