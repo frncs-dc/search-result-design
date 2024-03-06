@@ -24,7 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         let currentIndex = 0;
-        let screens = 1;
+        let screens = 0;
         let data = {
             
             "results": [
@@ -273,16 +273,16 @@
             
                     // If the counter for this key doesn't exist yet, initialize it
                     if (!clickCounters[key]) {
-                        clickCounters[key] = 1;
+                        clickCounters[key] = 0;
                     }
                     if (!clickCounters[key2]) {
-                        clickCounters[key2] = 1;
+                        clickCounters[key2] = 0;
                     }
                     if (!clickCounters[key3]) {
-                        clickCounters[key3] = 1;
+                        clickCounters[key3] = 0;
                     }
                     if (!clickCounters[key4]) {
-                        clickCounters[key4] = 1;
+                        clickCounters[key4] = 0;
                     }
             
                     // Increment the counter for the keys
@@ -417,40 +417,6 @@
                 }
             }
 
-            // Code below comes from the displayData function, not yet properly refactored
-            /*
-            sections.forEach((section, index) => {
-                const div = document.createElement('div');
-                div.className = 'card p-3 search-container border mb-2';
-
-                const h3 = document.createElement('h3');
-                const a = document.createElement('a');
-                a.className = 'search-title';
-                a.href = '#';
-                a.textContent = descriptionTypes[index]; // Set the title according to the description type
-
-                h3.appendChild(a);
-                div.appendChild(h3);
-                div.appendChild(section);
-
-                // Randomize the picture presence for the first set, then complement it for the next set
-                if (prevPicturePresence[index] === null) {
-                    if (Math.random() < 0.5) {
-                        appendPicture(div, result.image);
-                        prevPicturePresence[index] = true;
-                    } else {
-                        prevPicturePresence[index] = false;
-                    }
-                } else if (prevPicturePresence[index]) {
-                    prevPicturePresence[index] = false;
-                } else {
-                    appendPicture(div, result.image);
-                    prevPicturePresence[index] = true;
-                }
-
-                container.appendChild(div);
-            });
-            */
         }   
     </script>
     </body>
