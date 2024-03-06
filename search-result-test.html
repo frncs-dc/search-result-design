@@ -18,7 +18,7 @@
             <button id="downloadData">Download Data</button>
         </div>
         <div class="col col-3 border">
-            <!-- blank sapce to simulate the right side content of Bing search engine -->
+            <!-- blank space to simulate the right side content of Bing search engine -->
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -165,8 +165,7 @@
 
             // Create the div for the tab content
             const divTabContent = document.createElement('div');
-            divTabContent.className = 'tab-content';
-            divTabContent.className = "col-9";
+            divTabContent.className = 'tab-content col-9';
 
             // Iterate over all tabs
             result.description.tab.tabs.forEach((tab, index) => {
@@ -205,7 +204,20 @@
             const sections = [p, ulList, divTab,];
             const descriptionTypes = [paragraph.title, result.description.list.title, result.description.tab.title];
             const actualDescriptionTypes = [paragraph.type, result.description.list.type, result.description.tab.type]
-            sections.forEach((section, index) => {
+            
+            // Create an array of objects, where each object contains a section and its corresponding description type
+            const sectionObjects = sections.map((section, index) => {
+                return { section: section, descriptionType: actualDescriptionTypes[index] };
+            });
+
+            // Shuffle the array of objects
+            shuffle(sectionObjects);
+
+            // Extract the shuffled sections and description types from the array of objects
+            const shuffledSections = sectionObjects.map(object => object.section);
+            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
+
+            shuffledSections.forEach((section, index) => {
                 const div = document.createElement('div');
                 div.className = 'card p-3 search-container border mb-2 w-auto';
 
@@ -221,7 +233,7 @@
                 const a = document.createElement('a');
                 a.className = 'search-title';
                 a.href = '#';
-                a.textContent = descriptionTypes[index]; // Set the title according to the description type
+                a.textContent = descriptionTypes[sections.indexOf(shuffledSections[index])]; // Set the title according to the description type // Set the title according to the description type
 
                 h3.appendChild(a);
                 contentDiv.appendChild(h3); // Append the anchor to the content div
@@ -256,20 +268,13 @@
 
             anchors.forEach((anchor, index) => {
                 anchor.addEventListener('click', (event) => {
-                    if (screens >= 10) {
-                        console.log('Reached 10 screens, ending experiment.');
-                        //showData();
-                        autoDownload();
-                        alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
-                        return;
-                    }
                     event.preventDefault();
                     currentIndex = (currentIndex + 1) % data.results.length;
                     displayData();
             
                     // Get the result id and description type
                     const resultId = data.results[currentIndex].id;
-                    const actualDescriptionType = actualDescriptionTypes[index];
+                    const actualDescriptionType = shuffledDescriptionTypes[index];
                     const photoPresence = !prevPicturePresence[index];
             
                     // Create a key for the counters object
@@ -306,7 +311,6 @@
                     console.log(`Click count for ${key2}: ${clickCounters[key2]}`);
                     console.log(`Click count for ${key3}: ${clickCounters[key3]}`);
                     console.log(`Click count for ${key4}: ${clickCounters[key4]}`);
-                    screens++;
 
                     // Calculate the time taken
                     let clickTime = performance.now();
@@ -345,6 +349,15 @@
                     console.log(`Time taken for ${tkey4}: ${timeCounters[tkey4]} ms`);
                     // Reset the load time
                     loadTime = performance.now();
+                    console.log("NIG", screens);
+                    screens++;
+                    console.log("WAT", screens);
+                    if (screens >= 10) {
+                        console.log('Reached 10 screens, ending experiment.');
+                        autoDownload();
+                        alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
+                        return;
+                    }
                 });
             });
 
@@ -394,18 +407,6 @@
         });
         data.results.sort(() => Math.random() - 0.5);
         displayData();
-    
-        // // Fetch data from JSON file
-        // fetch('../sample.json')
-        // .then(response => response.json())
-        // .then(fetchedData => {
-        //     data = fetchedData;
-        //     // Randomize the order of results
-        //     data.results.sort(() => Math.random() - 0.5);
-        //     // Initially display the first data
-        //     displayData();
-        // })
-        // .catch(error => console.error('Error:', error));
 
         // Add function to automatically download data after 10 screens
         function autoDownload() {
@@ -423,6 +424,25 @@
             link.setAttribute('download', 'data.csv');
             document.body.appendChild(link);
             link.click();
+        }
+
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
         }
 
         // Add function to show data after 10 screens
