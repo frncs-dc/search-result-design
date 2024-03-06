@@ -14,7 +14,7 @@
         <button type="submit" class="border-0 rounded-5 px-4 ms-3">Search</button>
     </div>
     <div class="row check-space d-flex flex-row">
-        <div class="results-container col col-9 border d-flex flex-column flex-grow-1">
+        <div class="results-container col col-8 border d-flex flex-column flex-grow-1">
             <button id="downloadData">Download Data</button>
         </div>
         <div class="col col-3 border">
@@ -141,10 +141,12 @@
             // Select one paragraph
             const paragraph = result.description.paragraph;
             const p = document.createElement('div');
+            p.className = "col-10";
             p.textContent = paragraph.content;
     
             // Create a ul for the list
             const ulList = document.createElement('ul');
+            ulList.className = "col-10";
             // Iterate over all list items
             result.description.list.items.forEach(listItem => {
                 const liList = document.createElement('li');
@@ -164,6 +166,7 @@
             // Create the div for the tab content
             const divTabContent = document.createElement('div');
             divTabContent.className = 'tab-content';
+            divTabContent.className = "col-10";
 
             // Iterate over all tabs
             result.description.tab.tabs.forEach((tab, index) => {
