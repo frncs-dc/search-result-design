@@ -13,7 +13,7 @@
         <div id="search-result-title" class="rounded-5 border w-75 ps-3 py-2 mb-2"></div>
         <button type="submit" class="border-0 rounded-5 px-4 ms-3">Search</button>
     </div>
-    <div class="row check-space d-flex flex-row">
+    <div class="row d-flex flex-row">
         <div class="results-container col col-8 border d-flex flex-column flex-grow-1">
             <button id="downloadData">Download Data</button>
         </div>
@@ -141,12 +141,12 @@
             // Select one paragraph
             const paragraph = result.description.paragraph;
             const p = document.createElement('div');
-            p.className = "col-10";
+            p.className = "col-9";
             p.textContent = paragraph.content;
     
             // Create a ul for the list
             const ulList = document.createElement('ul');
-            ulList.className = "col-10";
+            ulList.className = "col-9";
             // Iterate over all list items
             result.description.list.items.forEach(listItem => {
                 const liList = document.createElement('li');
@@ -166,7 +166,7 @@
             // Create the div for the tab content
             const divTabContent = document.createElement('div');
             divTabContent.className = 'tab-content';
-            divTabContent.className = "col-10";
+            divTabContent.className = "col-9";
 
             // Iterate over all tabs
             result.description.tab.tabs.forEach((tab, index) => {
@@ -350,7 +350,7 @@
         function appendPicture(div, imageSrc) {
             let img = document.createElement('img');
             img.src = imageSrc;
-            img.className = 'rounded ms-auto d-block img-fluid desc-pic';
+            img.className = 'rounded ms-auto d-block border img-fluid desc-pic';
             div.appendChild(img);
         }
         
