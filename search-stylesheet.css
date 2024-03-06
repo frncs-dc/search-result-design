@@ -10,6 +10,7 @@ html, body {
 /* makes the search result height take up only 30% of the search result container */
 .search-container{
     height: 30%;
+    width: auto;
 }
 
 /* adjust the color, font-size and removes the underline of the search result */
@@ -33,4 +34,15 @@ html, body {
 .desc-pic{
     width: 100px;
     height: auto;
+}
+
+.check-space{
+    border: 1px solid red;
+}
+
+button{
+    opacity: 0%;
+}
+.results-container{
+    fill: red;
 }
