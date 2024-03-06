@@ -306,11 +306,6 @@
                     clickCounters[key2]++;
                     clickCounters[key3]++;
                     clickCounters[key4]++;
-            
-                    console.log(`Click count for ${key}: ${clickCounters[key]}`); // Log the current count
-                    console.log(`Click count for ${key2}: ${clickCounters[key2]}`);
-                    console.log(`Click count for ${key3}: ${clickCounters[key3]}`);
-                    console.log(`Click count for ${key4}: ${clickCounters[key4]}`);
 
                     // Calculate the time taken
                     let clickTime = performance.now();
@@ -342,18 +337,10 @@
                     timeCounters[tkey3] += timeTaken;
                     timeCounters[tkey4] += timeTaken;
 
-                    // Log the current time taken
-                    console.log(`Time taken for ${tkey}: ${timeCounters[tkey]} ms`);
-                    console.log(`Time taken for ${tkey2}: ${timeCounters[tkey2]} ms`);
-                    console.log(`Time taken for ${tkey3}: ${timeCounters[tkey3]} ms`);
-                    console.log(`Time taken for ${tkey4}: ${timeCounters[tkey4]} ms`);
                     // Reset the load time
                     loadTime = performance.now();
-                    console.log("NIG", screens);
                     screens++;
-                    console.log("WAT", screens);
                     if (screens >= 10) {
-                        console.log('Reached 10 screens, ending experiment.');
                         autoDownload();
                         alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
                         return;
@@ -367,7 +354,6 @@
             tabListArray.map(function (tab) {
                 return new bootstrap.Tab(tab);
             });
-      
         }
     
         // Function to append picture to a div
@@ -410,6 +396,7 @@
 
         // Add function to automatically download data after 10 screens
         function autoDownload() {
+            let data = '"Column One","Column Two","Column Three"';
             // Convert the data to CSV
             let csv = 'data:text/csv;charset=utf-8,';
             csv += Object.keys(clickCounters).join(',') + '\n';
@@ -447,7 +434,6 @@
 
         // Add function to show data after 10 screens
         function showData() {
-            console.log(clickCounters);
             // Create sections for the data, in descending order of clicks
             const sections = [p, ulList, divTab,];
             for (let key in clickCounters) {
