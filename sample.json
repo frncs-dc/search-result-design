@@ -11,9 +11,9 @@
           "title": "Top 30 Crossing Roads Jokes",
           "type": "tab",
           "tabs": [
-            {"title": "Tab 1", "content": "Q1: Why did the chicken cross the road? A: To prove it wasn’t a chicken cross."},
-            {"title": "Tab 2", "content": "Q2: Why did the chicken cross the road? A: To maintain 1 feet of social distancing."},
-            {"title": "Tab 3", "content": "Q3: Why did the chicken cross the road? A: To get to the other side!"}
+            {"title": "Example Joke", "content": "Q1: Why did the chicken cross the road? A: To prove it wasn’t a chicken cross."},
+            {"title": "Timely Joke", "content": "Q2: Why did the chicken cross the road? A: To maintain 1 feet of social distancing."},
+            {"title": "Original Joke", "content": "Q3: Why did the chicken cross the road? A: To get to the other side!"}
           ]
         }
       }
@@ -29,9 +29,9 @@
           "title": "Who’s That Meme | Professor Cramming Meme",
           "type": "tab",
           "tabs": [
-            {"title": "Tab 1", "content": "Professor Cramming Meme: Explore the origin and spread of the Professor Cramming meme, a hilarious depiction of academic stress and last-minute preparation."},
-            {"title": "Tab 2", "content": "Professor Cying Meme: Explore the origin and spread of the Professor Crying meme, a hilariously dark meme that shows the reality of teaching."},
-            {"title": "Tab 3", "content": "Professor Sleeping Meme: Explore the origin and spread of the Professor Sleeping meme, a depiction of overworked and stressed professors."}
+            {"title": "Professor Cramming Meme", "content": "Professor Cramming Meme: Explore the origin and spread of the Professor Cramming meme, a hilarious depiction of academic stress and last-minute preparation."},
+            {"title": "Professor Crying Meme", "content": "Professor Crying Meme: Explore the origin and spread of the Professor Crying meme, a hilariously dark meme that shows the reality of teaching."},
+            {"title": "Professor Sleeping Meme", "content": "Professor Sleeping Meme: Explore the origin and spread of the Professor Sleeping meme, a depiction of overworked and stressed professors."}
           ]
         }
       }
