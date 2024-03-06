@@ -209,6 +209,14 @@
                 const div = document.createElement('div');
                 div.className = 'card p-3 search-container border mb-2 w-auto';
 
+                // Create a new div to act as a flex container for the anchor, paragraph, and image
+                const flexDiv = document.createElement('div');
+                flexDiv.style.display = 'flex';
+                flexDiv.style.alignItems = 'flex-start'; // Align items vertically in the center
+
+                // Create a new div to contain the anchor and paragraph
+                const contentDiv = document.createElement('div');
+
                 const h3 = document.createElement('h3');
                 const a = document.createElement('a');
                 a.className = 'search-title';
@@ -216,13 +224,15 @@
                 a.textContent = descriptionTypes[index]; // Set the title according to the description type
 
                 h3.appendChild(a);
-                div.appendChild(h3);
-                div.appendChild(section);
+                contentDiv.appendChild(h3); // Append the anchor to the content div
+                contentDiv.appendChild(section); // Append the section to the content div
+                
+                flexDiv.appendChild(contentDiv); // Append the content div to the flex container
 
                 // Randomize the picture presence for the first set, then complement it for the next set
                 if (prevPicturePresence[index] === null) {
                     if (Math.random() < 0.5) {
-                        appendPicture(div, result.image);
+                        appendPicture(flexDiv, result.image);
                         prevPicturePresence[index] = true;
                     } else {
                         prevPicturePresence[index] = false;
@@ -230,10 +240,11 @@
                 } else if (prevPicturePresence[index]) {
                     prevPicturePresence[index] = false;
                 } else {
-                    appendPicture(div, result.image);
+                    appendPicture(flexDiv, result.image);
                     prevPicturePresence[index] = true;
                 }
 
+                div.appendChild(flexDiv); // Append the flex container to the main div
                 container.appendChild(div);
             });
 
@@ -348,10 +359,21 @@
     
         // Function to append picture to a div
         function appendPicture(div, imageSrc) {
+            let imgContainer = document.createElement('div');
+            imgContainer.style.width = '100px'; // Set the width of the container
+            imgContainer.style.height = '100px'; // Set the height of the container
+            imgContainer.style.overflow = 'hidden'; // Hide the parts of the image that don't fit in the container
+            imgContainer.style.marginLeft = 'auto'; // Align the image container to the right
+            imgContainer.style.borderRadius = '15px';
+
             let img = document.createElement('img');
             img.src = imageSrc;
-            img.className = 'rounded ms-auto d-block border img-fluid desc-pic';
-            div.appendChild(img);
+            img.style.width = '100%'; // Make the image fill the container
+            img.style.height = '100%'; // Make the image fill the container
+            img.style.objectFit = 'cover'; // Make the image cover the container while maintaining its aspect ratio
+
+            imgContainer.appendChild(img); // Append the image to the container
+            div.appendChild(imgContainer); // Append the container to the div
         }
         
         document.getElementById('downloadData').addEventListener('click', () => {
