@@ -231,7 +231,7 @@
             divTab.appendChild(divTabContent);
         
             // Array of the sections
-            const sections = [p, ulList, divTab,];
+            const sections = [p, ulList, divTab];
             const descriptionTitles = [paragraph.title, result.description.list.title, result.description.tab.title];
             const descriptionTypes = [paragraph.type, result.description.list.type, result.description.tab.type]
             
@@ -245,7 +245,7 @@
 
             // Extract the shuffled sections and description types from the array of objects
             const shuffledSections = sectionObjects.map(object => object.section);
-            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionTitles);
+            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
 
             shuffledSections.forEach((section, index) => {
                 const div = document.createElement('div');
@@ -361,7 +361,7 @@
                         timeCounters[tkey4] = 0;
                     }
 
-                    // Add the time taken to the counterst
+                    // Add the time taken to the counters
                     timeCounters[tkey] += timeTaken;
                     timeCounters[tkey2] += timeTaken;
                     timeCounters[tkey3] += timeTaken;
@@ -405,7 +405,7 @@
             div.appendChild(imgContainer); // Append the container to the div
         }
         
-        // DEFERRED, IGNORE
+        // DEFERRED, IGNORE!
         document.getElementById('downloadData').addEventListener('click', () => {
             // Convert the data to CSV
             let csv = 'data:text/csv;charset=utf-8,';
@@ -434,7 +434,6 @@
             let csv = 'data:text/csv;charset=utf-8,';
             csv += Object.keys(clickCounters).join(',') + '\n';
             csv += Object.values(clickCounters).join(',') + '\n';
-            csv += Object.keys(timeCounters).join(',') + '\n';
             csv += Object.values(timeCounters).join(',') + '\n';
 
             // Create a link and download the CSV
@@ -446,6 +445,7 @@
             link.click();
         }
 
+        // Helper function to shuffle an array
         function shuffle(array) {
             var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -463,20 +463,6 @@
             }
 
             return array;
-        }
-
-        // Add function to show data after 10 screens
-        function showData() {
-            // Create sections for the data, in descending order of clicks
-            const sections = [p, ulList, divTab,];
-            for (let key in clickCounters) {
-                const [resultId, descriptionType, photoPresence] = key.split('-');
-                const result = data.results.find(result => result.id === resultId);
-                const section = sections.find((section, index) => descriptionTypes[index] === descriptionType);
-                if (clickCounters[key] > 0) {
-                    appendSection(result, section);
-                }
-            }
         }
     </script>
     </body>
