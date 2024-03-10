@@ -405,25 +405,6 @@
             div.appendChild(imgContainer); // Append the container to the div
         }
         
-        // DEFERRED, IGNORE!
-        document.getElementById('downloadData').addEventListener('click', () => {
-            // Convert the data to CSV
-            let csv = 'data:text/csv;charset=utf-8,';
-            csv += Object.keys(clickCounters).join(',') + '\n';
-            csv += Object.values(clickCounters).join(',') + '\n';
-            csv += Object.keys(timeCounters).join(',') + '\n';
-            csv += Object.values(timeCounters).join(',') + '\n';
-
-            // Create a link and download the CSV
-            const encodedUri = encodeURI(csv);
-            const link = document.createElement('a');
-            link.setAttribute('href', encodedUri);
-            link.setAttribute('download', 'data.csv');
-            document.body.appendChild(link);
-            link.click();
-        });
-
-
         data.results.sort(() => Math.random() - 0.5);
         displayData();
 
@@ -438,11 +419,6 @@
 
             // Create a link and download the CSV
             const encodedUri = encodeURI(csv);
-            const link = document.createElement('a');
-            link.setAttribute('href', encodedUri);
-            link.setAttribute('download', 'data.csv');
-            document.body.appendChild(link);
-            link.click();
         }
 
         // Helper function to shuffle an array
