@@ -126,7 +126,13 @@
         let currentIndex = 0;
         let screens = 0;
         let clickCounters = {}; // Counters object for keeping track of clicks
+        let clickCounters2 = {};
+        let clickCounters3= {};
+        let clickCounters4 = {};
         let timeCounters = {};
+        let timeCounters2 = {};
+        let timeCounters3 = {};
+        let timeCounters4 = {};
         let prevPicturePresence = [null, null, null]; // Initial picture presence for paragraph, list, tab
         
         function displayData() {
@@ -229,7 +235,7 @@
             divTab.appendChild(ulTab);
             divTab.appendChild(divTabContent);
         
-            // Array of the sections
+            // Array of the sections; contains the paragraph, list, and tab
             const sections = [p, ulList, divTab];
             const descriptionTitles = [paragraph.title, result.description.list.title, result.description.tab.title];
             const descriptionTypes = [paragraph.type, result.description.list.type, result.description.tab.type]
@@ -289,6 +295,7 @@
                 container.appendChild(div);
             });
 
+            // 
             let loadTime = performance.now();
             
 
@@ -300,77 +307,89 @@
                     event.preventDefault();
                     currentIndex = (currentIndex + 1) % data.results.length;
                     displayData();
-            
+
+                    // if (repeat == 0), do calculations for the first time SET 1 & SET 2 was shown to user
                     // Get the result id and description type
-                    const resultId = data.results[currentIndex].id;
+                    const searchQueryTopic = data.results[currentIndex].title;
                     const descriptionTypes = shuffledDescriptionTypes[index];
                     const photoPresence = !prevPicturePresence[index];
+                    const photoPresenceSimple = photoPresence ? 'pic' : 'noPic';
             
                     // Create a key for the counters object
                     //key1 is for each specific topic's result layout combination
-                    const key = `${resultId}-${descriptionTypes}-${photoPresence}`;
+                    const key = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
                     //key2 is for each result layout combination, regardless of topic
-                    const key2 = `${descriptionTypes}-${photoPresence}`;
+                    const key2 = `${descriptionTypes}-${photoPresenceSimple}`;
                     //key2 is for each description type, regardless of photo presence and topic
                     const key3 = `${descriptionTypes}`;
                     //key2 is for the photo presence, regardless of topic and description type
-                    const key4 = `${photoPresence}`;
+                    const key4 = `${photoPresenceSimple}`;
             
                     // If the counter for this key doesn't exist yet, initialize it
                     if (!clickCounters[key]) {
                         clickCounters[key] = 0;
                     }
-                    if (!clickCounters[key2]) {
-                        clickCounters[key2] = 0;
+                    if (!clickCounters2[key2]) {
+                        clickCounters2[key2] = 0;
                     }
-                    if (!clickCounters[key3]) {
-                        clickCounters[key3] = 0;
+                    if (!clickCounters3[key3]) {
+                        clickCounters3[key3] = 0;
                     }
-                    if (!clickCounters[key4]) {
-                        clickCounters[key4] = 0;
+                    if (!clickCounters4[key4]) {
+                        clickCounters4[key4] = 0;
                     }
             
                     // Increment the counter for the keys
                     clickCounters[key]++;
-                    clickCounters[key2]++;
-                    clickCounters[key3]++;
-                    clickCounters[key4]++;
+                    clickCounters2[key2]++; // split descriptionTypes and photoPresence
+                    clickCounters3[key3]++;
+                    clickCounters4[key4]++;
 
                     // Calculate the time taken
                     let clickTime = performance.now();
                     let timeTaken = clickTime - loadTime;
 
                     // Create a key for the counters object
-                    const tkey = `${resultId}-${descriptionTypes}-${photoPresence}`;
-                    const tkey2 = `${descriptionTypes}-${photoPresence}`;
+                    const tkey = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
+                    const tkey2 = `${descriptionTypes}-${photoPresenceSimple}`;
                     const tkey3 = `${descriptionTypes}`;
-                    const tkey4 = `${photoPresence}`;
+                    const tkey4 = `${photoPresenceSimple}`;
 
                     // If the counter for this key doesn't exist yet, initialize it
                     if (!timeCounters[tkey]) {
                         timeCounters[tkey] = 0;
                     }
-                    if (!timeCounters[tkey2]) {
-                        timeCounters[tkey2] = 0;
+                    if (!timeCounters2[tkey2]) {
+                        timeCounters2[tkey2] = 0;
                     }
-                    if (!timeCounters[tkey3]) {
-                        timeCounters[tkey3] = 0;
+                    if (!timeCounters3[tkey3]) {
+                        timeCounters3[tkey3] = 0;
                     }
-                    if (!timeCounters[tkey4]) {
-                        timeCounters[tkey4] = 0;
+                    if (!timeCounters4[tkey4]) {
+                        timeCounters4[tkey4] = 0;
                     }
 
                     // Add the time taken to the counters
                     timeCounters[tkey] += timeTaken;
-                    timeCounters[tkey2] += timeTaken;
-                    timeCounters[tkey3] += timeTaken;
-                    timeCounters[tkey4] += timeTaken;
+                    timeCounters2[tkey2] += timeTaken;
+                    timeCounters3[tkey3] += timeTaken;
+                    timeCounters4[tkey4] += timeTaken;
 
                     // Reset the load time
                     loadTime = performance.now();
                     screens++;
-                    if (screens >= 10) {
+
+                    // This logic may need to be refactored
+                    if (screens >= 20) {
                         autoDownload();
+                        clickCounters[key] = clickCounters[key]/2;
+                        clickCounters2[key2] = clickCounters2[key2]/2;
+                        clickCounters3[key3] = clickCounters3[key3]/2;
+                        clickCounters4[key4] = clickCounters4[key4]/2;
+                        timeCounters[tkey] = timeCounters[tkey]/2;
+                        timeCounters2[tkey2] = timeCounters2[tkey2]/2;
+                        timeCounters3[tkey3] = timeCounters3[tkey3]/2;
+                        timeCounters4[tkey4] = timeCounters4[tkey4]/2;
                         alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
                         return;
                     }
@@ -410,11 +429,32 @@
         // Add function to automatically download data after 10 screens
         function autoDownload() {
             let data = '"Column One","Column Two","Column Three"';
+            // var headerData = ['Exact search result layout', 'Num of clicks', 'Avg time taken to choose (in ms)', 'Layout and photo combination', 'Num of clicks', 'Avg time taken to choose (in ms)', 'Layout only', 'Num of clicks', 'Avg time taken to choose (in ms)',	'Presence of photo', 'Num of clicks', 'Avg time taken to choose (in ms)'];
             // Convert the data to CSV
             let csv = 'data:text/csv;charset=utf-8,';
-            csv += Object.keys(clickCounters).join(',') + '\n';
-            csv += Object.values(clickCounters).join(',') + '\n';
-            csv += Object.values(timeCounters).join(',') + '\n';
+            //csv += headerData.join(',') + '\n'; // Adds the headers of each column to the CSV files
+
+            //TODO: Add header column
+
+            csv += 'Layout properties' + ',';
+            csv += Object.keys(clickCounters).join(',') + ',';
+            csv += Object.keys(clickCounters2).join(',') + ',';
+            csv += Object.keys(clickCounters3).join(',') + ',';
+            csv += Object.keys(clickCounters4).join(',') + '\n';
+            
+            csv += 'Number of clicks' + ',';
+            csv += Object.values(clickCounters).join(',') + ',';
+            csv += Object.values(clickCounters2).join(',') + ',';
+            csv += Object.values(clickCounters3).join(',') + ',';
+            csv += Object.values(clickCounters4).join(',') + '\n';
+
+            csv += 'Accumulated time taken to choose (in ms)' + ',';
+            csv += Object.values(timeCounters).join(',') + ',';
+            csv += Object.values(timeCounters2).join(',') + ',';
+            csv += Object.values(timeCounters3).join(',') + ',';
+            csv += Object.values(timeCounters4).join(',') + '\n';
+
+            // Can/might/should add average time taken to choose
 
             // Create a link and download the CSV
             const encodedUri = encodeURI(csv);
