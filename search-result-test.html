@@ -416,8 +416,6 @@
             csv += Object.keys(clickCounters).join(',') + '\n';
             csv += Object.values(clickCounters).join(',') + '\n';
             csv += Object.values(timeCounters).join(',') + '\n';
-
-            // Create a link and download the CSV
             const encodedUri = encodeURI(csv);
         }
 
