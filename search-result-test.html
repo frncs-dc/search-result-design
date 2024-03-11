@@ -125,14 +125,52 @@
         // Initialize variables
         let currentIndex = 0;
         let screens = 0;
-        let clickCounters = {}; // Counters object for keeping track of clicks
+
+        // Counters object for keeping track of clicks
+        let clickCounters = {};
         let clickCounters2 = {};
-        let clickCounters3= {};
+        let clickCounters3 = {};
         let clickCounters4 = {};
+        let clickCounters5 = {};
+        let clickCounters6= {};
+        let clickCounters7 = {};
+        let clickCountersFirstTime = {};
+        let clickCounters2FirstTime = {};
+        let clickCounters3FirstTime= {};
+        let clickCounters4FirstTime = {};
+        let clickCounters5FirstTime = {};
+        let clickCounters6FirstTime= {};
+        let clickCounters7FirstTime = {};
+        let clickCountersSecondTime = {};
+        let clickCounters2SecondTime = {};
+        let clickCounters3SecondTime= {};
+        let clickCounters4SecondTime = {};
+        let clickCounters5SecondTime = {};
+        let clickCounters6SecondTime= {};
+        let clickCounters7SecondTime = {};
+        // Counters object for keeping track of time taken after loading and before clicking
         let timeCounters = {};
         let timeCounters2 = {};
         let timeCounters3 = {};
         let timeCounters4 = {};
+        let timeCounters5 = {};
+        let timeCounters6= {};
+        let timeCounters7 = {};
+        let timeCountersFirstTime = {};
+        let timeCounters2FirstTime = {};
+        let timeCounters3FirstTime= {};
+        let timeCounters4FirstTime = {};
+        let timeCounters5FirstTime = {};
+        let timeCounters6FirstTime= {};
+        let timeCounters7FirstTime = {};
+        let timeCountersSecondTime = {};
+        let timeCounters2SecondTime = {};
+        let timeCounters3SecondTime= {};
+        let timeCounters4SecondTime = {};
+        let timeCounters5SecondTime = {};
+        let timeCounters6SecondTime= {};
+        let timeCounters7SecondTime = {};
+
         let prevPicturePresence = [null, null, null]; // Initial picture presence for paragraph, list, tab
         
         function displayData() {
@@ -297,7 +335,7 @@
 
             // 
             let loadTime = performance.now();
-            
+            let firstTime = true;
 
             // When the anchor is clicked, display the next data
             const anchors = document.querySelectorAll('.search-title');
@@ -313,83 +351,353 @@
                     const searchQueryTopic = data.results[currentIndex].title;
                     const descriptionTypes = shuffledDescriptionTypes[index];
                     const photoPresence = !prevPicturePresence[index];
-                    const photoPresenceSimple = photoPresence ? 'pic' : 'noPic';
+                    const photoPresenceSimple = photoPresence ? 'pic' : 'noPic'; // converts TRUE and FALSE with 'pic' and 'noPic' respectively
+
+                    // KNOWN ISSUE: There is a bug where the first time and second time are not being calculated correctly.
+                        // Screen 11, despite being "secondTime", is becoming part of "firstTime".
+                    if (screens < 10){
+                        firstTime = true
+                    } else if (screens >= 10 && screens < 20) {
+                        firstTime = false
+                    }
+                    console.log(firstTime)
+                    let firstTimeSimple = firstTime ? 'first' : 'second'; // converts TRUE and FALSE with 'first' and 'second' respectively
+                    console.log(firstTimeSimple)
             
                     // Create a key for the counters object
-                    //key1 is for each specific topic's result layout combination
-                    const key = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
-                    //key2 is for each result layout combination, regardless of topic
-                    const key2 = `${descriptionTypes}-${photoPresenceSimple}`;
-                    //key2 is for each description type, regardless of photo presence and topic
-                    const key3 = `${descriptionTypes}`;
-                    //key2 is for the photo presence, regardless of topic and description type
-                    const key4 = `${photoPresenceSimple}`;
-            
+                    //key1 is for each specific topic's result layout combination (taking into account whether it's the first time or second time seeing the layout)
+                    const key = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}-${firstTimeSimple}`;
+                    //key2 is for each specific topic's result layout combination
+                    const key2 = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
+                    //key3 is for each result layout combination, regardless of topic  (taking into account whether it's the first time or second time seeing the layout)
+                    const key3 = `${descriptionTypes}-${photoPresenceSimple}-${firstTimeSimple}`;
+                    //key4 is for each result layout combination, regardless of topic
+                    const key4 = `${descriptionTypes}-${photoPresenceSimple}`;
+                    //key5 is for each description type, regardless of photo presence and topic  (taking into account whether it's the first time or second time seeing the layout)
+                    const key5 = `${descriptionTypes}-${firstTimeSimple}`;
+                    //key6 is for each description type, regardless of photo presence and topic
+                    const key6 = `${descriptionTypes}`; 
+                    //key7 is for the photo presence, regardless of topic and description type
+                    const key7 = `${photoPresenceSimple}`;
+                    
                     // If the counter for this key doesn't exist yet, initialize it
-                    if (!clickCounters[key]) {
-                        clickCounters[key] = 0;
-                    }
-                    if (!clickCounters2[key2]) {
-                        clickCounters2[key2] = 0;
-                    }
-                    if (!clickCounters3[key3]) {
-                        clickCounters3[key3] = 0;
-                    }
-                    if (!clickCounters4[key4]) {
-                        clickCounters4[key4] = 0;
-                    }
-            
-                    // Increment the counter for the keys
-                    clickCounters[key]++;
-                    clickCounters2[key2]++; // split descriptionTypes and photoPresence
-                    clickCounters3[key3]++;
-                    clickCounters4[key4]++;
+                    if (screens <= 10){
+                        if (!clickCountersFirstTime[key]) {
+                            clickCountersFirstTime[key] = 0;
+                        }
+                        if (!clickCounters2FirstTime[key2]) {
+                            clickCounters2FirstTime[key2] = 0;
+                        }
+                        if (!clickCounters3FirstTime[key3]) {
+                            clickCounters3FirstTime[key3] = 0;
+                        }
+                        if (!clickCounters4FirstTime[key4]) {
+                            clickCounters4FirstTime[key4] = 0;
+                        }
+                        if (!clickCounters5FirstTime[key5]) {
+                            clickCounters5FirstTime[key5] = 0;
+                        }
+                        if (!clickCounters6FirstTime[key6]) {
+                            clickCounters6FirstTime[key6] = 0;
+                        }
+                        if (!clickCounters7FirstTime[key7]) {
+                            clickCounters7FirstTime[key7] = 0;
+                        }
+                        clickCountersFirstTime[key]++;
+                        clickCounters2FirstTime[key2]++;
+                        clickCounters3FirstTime[key3]++;
+                        clickCounters4FirstTime[key4]++;
+                        clickCounters5FirstTime[key5]++;
+                        clickCounters6FirstTime[key6]++;
+                        clickCounters7FirstTime[key7]++;
 
-                    // Calculate the time taken
+                        if (!clickCounters[key]) {
+                            clickCounters[key] = 0;
+                        }
+                        if (!clickCounters2[key2]) {
+                            clickCounters2[key2] = 0;
+                        }
+                        if (!clickCounters3[key3]) {
+                            clickCounters3[key3] = 0;
+                        }
+                        if (!clickCounters4[key4]) {
+                            clickCounters4[key4] = 0;
+                        }
+                        if (!clickCounters5[key5]) {
+                            clickCounters5[key5] = 0;
+                        }
+                        if (!clickCounters6[key6]) {
+                            clickCounters6[key6] = 0;
+                        }
+                        if (!clickCounters7[key7]) {
+                            clickCounters7[key7] = 0;
+                        }
+                        clickCounters[key]++;
+                        clickCounters2[key2]++;
+                        clickCounters3[key3]++;
+                        clickCounters4[key4]++;
+                        clickCounters5[key5]++;
+                        clickCounters6[key6]++;
+                        clickCounters7[key7]++;
+                    } if (screens > 10 && screens < 20) {
+                        if (!clickCountersSecondTime[key]) {
+                            clickCountersSecondTime[key] = 0;
+                        }
+                        if (!clickCounters2SecondTime[key2]) {
+                            clickCounters2SecondTime[key2] = 0;
+                        }
+                        if (!clickCounters3SecondTime[key3]) {
+                            clickCounters3SecondTime[key3] = 0;
+                        }
+                        if (!clickCounters4SecondTime[key4]) {
+                            clickCounters4SecondTime[key4] = 0;
+                        }
+                        if (!clickCounters5SecondTime[key5]) {
+                            clickCounters5SecondTime[key5] = 0;
+                        }
+                        if (!clickCounters6SecondTime[key6]) {
+                            clickCounters6SecondTime[key6] = 0;
+                        }
+                        if (!clickCounters7SecondTime[key7]) {
+                            clickCounters7SecondTime[key7] = 0;
+                        }
+                        clickCountersSecondTime[key]++;
+                        clickCounters2SecondTime[key2]++;
+                        clickCounters3SecondTime[key3]++;
+                        clickCounters4SecondTime[key4]++;
+                        clickCounters5SecondTime[key5]++;
+                        clickCounters6SecondTime[key6]++;
+                        clickCounters7SecondTime[key7]++;
+
+                        if (!clickCounters[key]) {
+                            clickCounters[key] = 0;
+                        }
+                        if (!clickCounters2[key2]) {
+                            clickCounters2[key2] = 0;
+                        }
+                        if (!clickCounters3[key3]) {
+                            clickCounters3[key3] = 0;
+                        }
+                        if (!clickCounters4[key4]) {
+                            clickCounters4[key4] = 0;
+                        }
+                        if (!clickCounters5[key5]) {
+                            clickCounters5[key5] = 0;
+                        }
+                        if (!clickCounters6[key6]) {
+                            clickCounters6[key6] = 0;
+                        }
+                        if (!clickCounters7[key7]) {
+                            clickCounters7[key7] = 0;
+                        }
+                        clickCounters[key]++;
+                        clickCounters2[key2]++;
+                        clickCounters3[key3]++;
+                        clickCounters4[key4]++;
+                        clickCounters5[key5]++;
+                        clickCounters6[key6]++;
+                        clickCounters7[key7]++;
+                    }
+                    
+                    
                     let clickTime = performance.now();
                     let timeTaken = clickTime - loadTime;
 
                     // Create a key for the counters object
-                    const tkey = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
-                    const tkey2 = `${descriptionTypes}-${photoPresenceSimple}`;
-                    const tkey3 = `${descriptionTypes}`;
-                    const tkey4 = `${photoPresenceSimple}`;
+                    //tkey1 is for each specific topic's result layout combination (taking into account whether it's the first time or second time seeing the layout)
+                    const tkey = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}-${firstTimeSimple}`;
+                    //tkey2 is for each specific topic's result layout combination
+                    const tkey2 = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}`;
+                    //tkey3 is for each result layout combination, regardless of topic  (taking into account whether it's the first time or second time seeing the layout)
+                    const tkey3 = `${descriptionTypes}-${photoPresenceSimple}-${firstTimeSimple}`;
+                    //tkey4 is for each result layout combination, regardless of topic
+                    const tkey4 = `${descriptionTypes}-${photoPresenceSimple}`;
+                    //tkey5 is for each description type, regardless of photo presence and topic  (taking into account whether it's the first time or second time seeing the layout)
+                    const tkey5 = `${descriptionTypes}-${firstTimeSimple}`;
+                    //tkey6 is for each description type, regardless of photo presence and topic
+                    const tkey6 = `${descriptionTypes}`; 
+                    //tkey7 is for the photo presence, regardless of topic and description type
+                    const tkey7 = `${photoPresenceSimple}`;
 
                     // If the counter for this key doesn't exist yet, initialize it
-                    if (!timeCounters[tkey]) {
-                        timeCounters[tkey] = 0;
-                    }
-                    if (!timeCounters2[tkey2]) {
-                        timeCounters2[tkey2] = 0;
-                    }
-                    if (!timeCounters3[tkey3]) {
-                        timeCounters3[tkey3] = 0;
-                    }
-                    if (!timeCounters4[tkey4]) {
-                        timeCounters4[tkey4] = 0;
+                    if (screens <= 10){
+                        
+                        if (!timeCountersFirstTime[tkey]) {
+                            timeCountersFirstTime[tkey] = 0;
+                        }
+                        if (!timeCounters2FirstTime[tkey2]) {
+                            timeCounters2FirstTime[tkey2] = 0;
+                        }
+                        if (!timeCounters3FirstTime[tkey3]) {
+                            timeCounters3FirstTime[tkey3] = 0;
+                        }
+                        if (!timeCounters4FirstTime[tkey4]) {
+                            timeCounters4FirstTime[tkey4] = 0;
+                        }
+                        if (!timeCounters5FirstTime[tkey5]) {
+                            timeCounters5FirstTime[tkey5] = 0;
+                        }
+                        if (!timeCounters6FirstTime[tkey6]) {
+                            timeCounters6FirstTime[tkey6] = 0;
+                        }
+                        if (!timeCounters7FirstTime[tkey7]) {
+                            timeCounters7FirstTime[tkey7] = 0;
+                        }
+                        timeCountersFirstTime[tkey]++;
+                        timeCounters2FirstTime[tkey2]++;
+                        timeCounters3FirstTime[tkey3]++;
+                        timeCounters4FirstTime[tkey4]++;
+                        timeCounters5FirstTime[tkey5]++;
+                        timeCounters6FirstTime[tkey6]++;
+                        timeCounters7FirstTime[tkey7]++;
+
+                        if (!timeCounters[tkey]) {
+                            timeCounters[tkey] = 0;
+                        }
+                        if (!timeCounters2[tkey2]) {
+                            timeCounters2[tkey2] = 0;
+                        }
+                        if (!timeCounters3[tkey3]) {
+                            timeCounters3[tkey3] = 0;
+                        }
+                        if (!timeCounters4[tkey4]) {
+                            timeCounters4[tkey4] = 0;
+                        }
+                        if (!timeCounters5[tkey5]) {
+                            timeCounters5[tkey5] = 0;
+                        }
+                        if (!timeCounters6[tkey6]) {
+                            timeCounters6[tkey6] = 0;
+                        }
+                        if (!timeCounters7[tkey7]) {
+                            timeCounters7[tkey7] = 0;
+                        }
+                        timeCounters[tkey]++;
+                        timeCounters2[tkey2]++;
+                        timeCounters3[tkey3]++;
+                        timeCounters4[tkey4]++;
+                        timeCounters5[tkey5]++;
+                        timeCounters6[tkey6]++;
+                        timeCounters7[tkey7]++;
+                    } if (screens > 10 && screens <= 20) {
+                        
+                        if (!timeCountersSecondTime[tkey]) {
+                            timeCountersSecondTime[tkey] = 0;
+                        }
+                        if (!timeCounters2SecondTime[tkey2]) {
+                            timeCounters2SecondTime[tkey2] = 0;
+                        }
+                        if (!timeCounters3SecondTime[tkey3]) {
+                            timeCounters3SecondTime[tkey3] = 0;
+                        }
+                        if (!timeCounters4SecondTime[tkey4]) {
+                            timeCounters4SecondTime[tkey4] = 0;
+                        }
+                        if (!timeCounters5SecondTime[tkey5]) {
+                            timeCounters5SecondTime[tkey5] = 0;
+                        }
+                        if (!timeCounters6SecondTime[tkey6]) {
+                            timeCounters6SecondTime[tkey6] = 0;
+                        }
+                        if (!timeCounters7SecondTime[tkey7]) {
+                            timeCounters7SecondTime[tkey7] = 0;
+                        }
+                        timeCountersSecondTime[tkey]++;
+                        timeCounters2SecondTime[tkey2]++;
+                        timeCounters3SecondTime[tkey3]++;
+                        timeCounters4SecondTime[tkey4]++;
+                        timeCounters5SecondTime[tkey5]++;
+                        timeCounters6SecondTime[tkey6]++;
+                        timeCounters7SecondTime[tkey7]++;
+
+                        if (!timeCounters[tkey]) {
+                            timeCounters[tkey] = 0;
+                        }
+                        if (!timeCounters2[tkey2]) {
+                            timeCounters2[tkey2] = 0;
+                        }
+                        if (!timeCounters3[tkey3]) {
+                            timeCounters3[tkey3] = 0;
+                        }
+                        if (!timeCounters4[tkey4]) {
+                            timeCounters4[tkey4] = 0;
+                        }
+                        if (!timeCounters5[tkey5]) {
+                            timeCounters5[tkey5] = 0;
+                        }
+                        if (!timeCounters6[tkey6]) {
+                            timeCounters6[tkey6] = 0;
+                        }
+                        if (!timeCounters7[tkey7]) {
+                            timeCounters7[tkey7] = 0;
+                        }
+                        timeCounters[tkey]++;
+                        timeCounters2[tkey2]++;
+                        timeCounters3[tkey3]++;
+                        timeCounters4[tkey4]++;
+                        timeCounters5[tkey5]++;
+                        timeCounters6[tkey6]++;
+                        timeCounters7[tkey7]++;
                     }
 
-                    // Add the time taken to the counters
-                    timeCounters[tkey] += timeTaken;
-                    timeCounters2[tkey2] += timeTaken;
-                    timeCounters3[tkey3] += timeTaken;
-                    timeCounters4[tkey4] += timeTaken;
+                    // OLD CODE: Add the time taken to the counters
+                    // timeCounters[tkey] += timeTaken;
+                    // timeCounters2[tkey2] += timeTaken;
+                    // timeCounters3[tkey3] += timeTaken;
+                    // timeCounters4[tkey4] += timeTaken;
 
                     // Reset the load time
                     loadTime = performance.now();
                     screens++;
 
-                    // This logic may need to be refactored
+                    console.log("screens: " + screens);
+
                     if (screens >= 20) {
                         autoDownload();
-                        clickCounters[key] = clickCounters[key]/2;
-                        clickCounters2[key2] = clickCounters2[key2]/2;
-                        clickCounters3[key3] = clickCounters3[key3]/2;
-                        clickCounters4[key4] = clickCounters4[key4]/2;
-                        timeCounters[tkey] = timeCounters[tkey]/2;
-                        timeCounters2[tkey2] = timeCounters2[tkey2]/2;
-                        timeCounters3[tkey3] = timeCounters3[tkey3]/2;
-                        timeCounters4[tkey4] = timeCounters4[tkey4]/2;
+                        clickCounters[key] /= 4;
+                        clickCounters2[key2] /= 4;
+                        clickCounters3[key3] /= 4;
+                        clickCounters4[key4] /= 4;
+                        clickCounters5[key5] /= 4;
+                        clickCounters6[key6] /= 4;
+                        clickCounters7[key7] /= 4;
+                        clickCountersFirstTime[key] /= 2;
+                        clickCounters2FirstTime[key2] /= 2;
+                        clickCounters3FirstTime[key3] /= 2;
+                        clickCounters4FirstTime[key4] /= 2;
+                        clickCounters5FirstTime[key5] /= 2;
+                        clickCounters6FirstTime[key6] /= 2;
+                        clickCounters7FirstTime[key7] /= 2;
+                        clickCountersSecondTime[key] /= 2;
+                        clickCounters2SecondTime[key2] /= 2;
+                        clickCounters3SecondTime[key3] /= 2;
+                        clickCounters4SecondTime[key4] /= 2;
+                        clickCounters5SecondTime[key5] /= 2;
+                        clickCounters6SecondTime[key6] /= 2;
+                        clickCounters7SecondTime[key7] /= 2;
+                        
+                        timeCounters[tkey] /= 4;
+                        timeCounters2[tkey2] /= 4;
+                        timeCounters3[tkey3] /= 4;
+                        timeCounters4[tkey4] /= 4;
+                        timeCounters5[tkey5] /= 4;
+                        timeCounters6[tkey6] /= 4;
+                        timeCounters7[tkey7] /= 4;
+                        timeCountersFirstTime[tkey] /= 2;
+                        timeCounters2FirstTime[tkey2] /= 2;
+                        timeCounters3FirstTime[tkey3] /= 2;
+                        timeCounters4FirstTime[tkey4] /= 2;
+                        timeCounters5FirstTime[tkey5] /= 2;
+                        timeCounters6FirstTime[tkey6] /= 2;
+                        timeCounters7FirstTime[tkey7] /= 2;
+                        timeCountersSecondTime[tkey] /= 2;
+                        timeCounters2SecondTime[tkey2] /= 2;
+                        timeCounters3SecondTime[tkey3] /= 2;
+                        timeCounters4SecondTime[tkey4] /= 2;
+                        timeCounters5SecondTime[tkey5] /= 2;
+                        timeCounters6SecondTime[tkey6] /= 2;
+                        timeCounters7SecondTime[tkey7] /= 2;
+
                         alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
                         return;
                     }
@@ -434,27 +742,86 @@
             let csv = 'data:text/csv;charset=utf-8,';
             //csv += headerData.join(',') + '\n'; // Adds the headers of each column to the CSV files
 
-            //TODO: Add header column
+            //TODO: CHANGE OLD CODE TO TAKE INTO ACCOUNT FIRST AND SECOND TIME
 
-            csv += 'Layout properties' + ',';
-            csv += Object.keys(clickCounters).join(',') + ',';
+            // OVERALL DATA
+            csv += 'Overall layout properties' + ',';
             csv += Object.keys(clickCounters2).join(',') + ',';
-            csv += Object.keys(clickCounters3).join(',') + ',';
-            csv += Object.keys(clickCounters4).join(',') + '\n';
+            csv += Object.keys(clickCounters4).join(',') + ',';
+            csv += Object.keys(clickCounters6).join(',') + ',';
+            csv += Object.keys(clickCounters7).join(',') + '\n';
             
-            csv += 'Number of clicks' + ',';
-            csv += Object.values(clickCounters).join(',') + ',';
+            csv += 'Overall number of clicks' + ',';
             csv += Object.values(clickCounters2).join(',') + ',';
-            csv += Object.values(clickCounters3).join(',') + ',';
-            csv += Object.values(clickCounters4).join(',') + '\n';
+            csv += Object.values(clickCounters4).join(',') + ',';
+            csv += Object.values(clickCounters6).join(',') + ',';
+            csv += Object.values(clickCounters7).join(',') + '\n';
 
-            csv += 'Accumulated time taken to choose (in ms)' + ',';
-            csv += Object.values(timeCounters).join(',') + ',';
+            csv += 'Overall accumulated time taken to choose (in ms)' + ',';
             csv += Object.values(timeCounters2).join(',') + ',';
-            csv += Object.values(timeCounters3).join(',') + ',';
-            csv += Object.values(timeCounters4).join(',') + '\n';
+            csv += Object.values(timeCounters4).join(',') + ',';
+            csv += Object.values(timeCounters6).join(',') + ',';
+            csv += Object.values(timeCounters7).join(',') + '\n' + '\n';
 
-            // Can/might/should add average time taken to choose
+            //FIRST TIME APPEARANCE DATA
+
+            csv += 'First-time appearance layout properties' + ',';
+            csv += Object.keys(clickCountersFirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters2FirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters3FirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters4FirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters5FirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters6FirstTime).join(',') + ',';
+            csv += Object.keys(clickCounters7FirstTime).join(',') + '\n';
+            
+            csv += 'First-time appearance number of clicks' + ',';
+            csv += Object.values(clickCountersFirstTime).join(',') + ',';
+            csv += Object.values(clickCounters2FirstTime).join(',') + ',';
+            csv += Object.values(clickCounters3FirstTime).join(',') + ',';
+            csv += Object.values(clickCounters4FirstTime).join(',') + ',';
+            csv += Object.values(clickCounters5FirstTime).join(',') + ',';
+            csv += Object.values(clickCounters6FirstTime).join(',') + ',';
+            csv += Object.values(clickCounters7FirstTime).join(',') + '\n';
+
+            csv += 'First-time appearance accumulated time taken to choose (in ms)' + ',';
+            csv += Object.values(timeCountersFirstTime).join(',') + ',';
+            csv += Object.values(timeCounters2FirstTime).join(',') + ',';
+            csv += Object.values(timeCounters3FirstTime).join(',') + ',';
+            csv += Object.values(timeCounters4FirstTime).join(',') + ',';
+            csv += Object.values(timeCounters5FirstTime).join(',') + ',';
+            csv += Object.values(timeCounters6FirstTime).join(',') + ',';
+            csv += Object.values(timeCounters7FirstTime).join(',') + '\n' + '\n';
+
+            //SECOND TIME APPEARANCE DATA
+
+            csv += 'Second-time appearance layout properties' + ',';
+            csv += Object.keys(clickCountersSecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters2SecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters3SecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters4SecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters5SecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters6SecondTime).join(',') + ',';
+            csv += Object.keys(clickCounters7SecondTime).join(',') + '\n';
+            
+            csv += 'Second-time appearance number of clicks' + ',';
+            csv += Object.values(clickCountersSecondTime).join(',') + ',';
+            csv += Object.values(clickCounters2SecondTime).join(',') + ',';
+            csv += Object.values(clickCounters3SecondTime).join(',') + ',';
+            csv += Object.values(clickCounters4SecondTime).join(',') + ',';
+            csv += Object.values(clickCounters5SecondTime).join(',') + ',';
+            csv += Object.values(clickCounters6SecondTime).join(',') + ',';
+            csv += Object.values(clickCounters7SecondTime).join(',') + '\n';
+
+            csv += 'Second-time appearance accumulated time taken to choose (in ms)' + ',';
+            csv += Object.values(timeCountersSecondTime).join(',') + ',';
+            csv += Object.values(timeCounters2SecondTime).join(',') + ',';
+            csv += Object.values(timeCounters3SecondTime).join(',') + ',';
+            csv += Object.values(timeCounters4SecondTime).join(',') + ',';
+            csv += Object.values(timeCounters5SecondTime).join(',') + ',';
+            csv += Object.values(timeCounters6SecondTime).join(',') + ',';
+            csv += Object.values(timeCounters7SecondTime).join(',') + '\n' + '\n';
+
+            // Small comment: Can/might/should add average time taken to choose
 
             // Create a link and download the CSV
             const encodedUri = encodeURI(csv);
