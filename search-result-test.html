@@ -314,20 +314,36 @@
                 
                 flexDiv.appendChild(contentDiv); // Append the content div to the flex container
 
-                // Randomize the picture presence for the first set, then complement it for the next set
-                if (prevPicturePresence[index] === null) {
-                    if (Math.random() < 0.5) {
+                shuffledDescriptionTypes.forEach((descriptionType, index) => {
+                    // Randomize the picture presence for the first set, then complement it for the next set
+                    if (prevPicturePresence[index] === null) {
+                        if (Math.random() < 0.5) {
+                            appendPicture(flexDiv, result.image);
+                            prevPicturePresence[index] = true;
+                        } else {
+                            prevPicturePresence[index] = false;
+                        }
+                    } else if (prevPicturePresence[index]) {
+                        prevPicturePresence[index] = false;
+                    } else {
                         appendPicture(flexDiv, result.image);
                         prevPicturePresence[index] = true;
-                    } else {
-                        prevPicturePresence[index] = false;
                     }
-                } else if (prevPicturePresence[index]) {
-                    prevPicturePresence[index] = false;
-                } else {
-                    appendPicture(flexDiv, result.image);
-                    prevPicturePresence[index] = true;
-                }
+                });
+                // // Randomize the picture presence for the first set, then complement it for the next set
+                // if (prevPicturePresence[index] === null) {
+                //     if (Math.random() < 0.5) {
+                //         appendPicture(flexDiv, result.image);
+                //         prevPicturePresence[index] = true;
+                //     } else {
+                //         prevPicturePresence[index] = false;
+                //     }
+                // } else if (prevPicturePresence[index]) {
+                //     prevPicturePresence[index] = false;
+                // } else {
+                //     appendPicture(flexDiv, result.image);
+                //     prevPicturePresence[index] = true;
+                // }
 
                 div.appendChild(flexDiv); // Append the flex container to the main div
                 container.appendChild(div);
@@ -381,7 +397,7 @@
                     const key7 = `${photoPresenceSimple}`;
                     
                     // If the counter for this key doesn't exist yet, initialize it
-                    if (screens <= 10){
+                    if (screens < 10){
                         if (!clickCountersFirstTime[key]) {
                             clickCountersFirstTime[key] = 0;
                         }
@@ -439,7 +455,7 @@
                         clickCounters5[key5]++;
                         clickCounters6[key6]++;
                         clickCounters7[key7]++;
-                    } if (screens > 10 && screens < 20) {
+                    } if (screens >= 10 && screens < 20) {
                         if (!clickCountersSecondTime[key]) {
                             clickCountersSecondTime[key] = 0;
                         }
@@ -520,7 +536,7 @@
                     const tkey7 = `${photoPresenceSimple}`;
 
                     // If the counter for this key doesn't exist yet, initialize it
-                    if (screens <= 10){
+                    if (screens < 10){
                         
                         if (!timeCountersFirstTime[tkey]) {
                             timeCountersFirstTime[tkey] = 0;
@@ -579,7 +595,7 @@
                         timeCounters5[tkey5]++;
                         timeCounters6[tkey6]++;
                         timeCounters7[tkey7]++;
-                    } if (screens > 10 && screens <= 20) {
+                    } if (screens >= 10 && screens < 20) {
                         
                         if (!timeCountersSecondTime[tkey]) {
                             timeCountersSecondTime[tkey] = 0;
