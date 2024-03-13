@@ -314,22 +314,25 @@
                 
                 flexDiv.appendChild(contentDiv); // Append the content div to the flex container
 
-                shuffledDescriptionTypes.forEach((descriptionType, index) => {
-                    // Randomize the picture presence for the first set, then complement it for the next set
-                    if (prevPicturePresence[index] === null) {
-                        if (Math.random() < 0.5) {
-                            appendPicture(flexDiv, result.image);
-                            prevPicturePresence[index] = true;
-                        } else {
-                            prevPicturePresence[index] = false;
-                        }
-                    } else if (prevPicturePresence[index]) {
-                        prevPicturePresence[index] = false;
-                    } else {
+                //const descriptionKey = `${descriptionType}-${a.textContent}`;
+                
+                const descriptionType = shuffledDescriptionTypes[index];
+                const descriptionKey = `${descriptionType}-${a.textContent}`;
+
+                // Use the descriptionKey to track the picture presence per topic
+                if (prevPicturePresence[descriptionKey] === undefined) {
+                    if (Math.random() < 0.5) {
                         appendPicture(flexDiv, result.image);
-                        prevPicturePresence[index] = true;
+                        prevPicturePresence[descriptionKey] = true;
+                    } else {
+                        prevPicturePresence[descriptionKey] = false;
                     }
-                });
+                } else if (prevPicturePresence[descriptionKey]) {
+                    prevPicturePresence[descriptionKey] = false;
+                } else {
+                    appendPicture(flexDiv, result.image);
+                    prevPicturePresence[descriptionKey] = true;
+                }
                 // // Randomize the picture presence for the first set, then complement it for the next set
                 // if (prevPicturePresence[index] === null) {
                 //     if (Math.random() < 0.5) {
@@ -783,59 +786,35 @@
 
             csv += 'First-time appearance layout properties' + ',';
             csv += Object.keys(clickCountersFirstTime).join(',') + ',';
-            csv += Object.keys(clickCounters2FirstTime).join(',') + ',';
             csv += Object.keys(clickCounters3FirstTime).join(',') + ',';
-            csv += Object.keys(clickCounters4FirstTime).join(',') + ',';
-            csv += Object.keys(clickCounters5FirstTime).join(',') + ',';
-            csv += Object.keys(clickCounters6FirstTime).join(',') + ',';
-            csv += Object.keys(clickCounters7FirstTime).join(',') + '\n';
+            csv += Object.keys(clickCounters5FirstTime).join(',') + '\n';
             
             csv += 'First-time appearance number of clicks' + ',';
             csv += Object.values(clickCountersFirstTime).join(',') + ',';
-            csv += Object.values(clickCounters2FirstTime).join(',') + ',';
             csv += Object.values(clickCounters3FirstTime).join(',') + ',';
-            csv += Object.values(clickCounters4FirstTime).join(',') + ',';
-            csv += Object.values(clickCounters5FirstTime).join(',') + ',';
-            csv += Object.values(clickCounters6FirstTime).join(',') + ',';
-            csv += Object.values(clickCounters7FirstTime).join(',') + '\n';
+            csv += Object.values(clickCounters5FirstTime).join(',') + '\n';
 
             csv += 'First-time appearance accumulated time taken to choose (in ms)' + ',';
             csv += Object.values(timeCountersFirstTime).join(',') + ',';
-            csv += Object.values(timeCounters2FirstTime).join(',') + ',';
             csv += Object.values(timeCounters3FirstTime).join(',') + ',';
-            csv += Object.values(timeCounters4FirstTime).join(',') + ',';
-            csv += Object.values(timeCounters5FirstTime).join(',') + ',';
-            csv += Object.values(timeCounters6FirstTime).join(',') + ',';
-            csv += Object.values(timeCounters7FirstTime).join(',') + '\n' + '\n';
+            csv += Object.values(timeCounters5FirstTime).join(',') + '\n' + '\n';
 
             //SECOND TIME APPEARANCE DATA
 
             csv += 'Second-time appearance layout properties' + ',';
             csv += Object.keys(clickCountersSecondTime).join(',') + ',';
-            csv += Object.keys(clickCounters2SecondTime).join(',') + ',';
             csv += Object.keys(clickCounters3SecondTime).join(',') + ',';
-            csv += Object.keys(clickCounters4SecondTime).join(',') + ',';
-            csv += Object.keys(clickCounters5SecondTime).join(',') + ',';
-            csv += Object.keys(clickCounters6SecondTime).join(',') + ',';
-            csv += Object.keys(clickCounters7SecondTime).join(',') + '\n';
+            csv += Object.keys(clickCounters5SecondTime).join(',') + '\n';
             
             csv += 'Second-time appearance number of clicks' + ',';
             csv += Object.values(clickCountersSecondTime).join(',') + ',';
-            csv += Object.values(clickCounters2SecondTime).join(',') + ',';
             csv += Object.values(clickCounters3SecondTime).join(',') + ',';
-            csv += Object.values(clickCounters4SecondTime).join(',') + ',';
-            csv += Object.values(clickCounters5SecondTime).join(',') + ',';
-            csv += Object.values(clickCounters6SecondTime).join(',') + ',';
-            csv += Object.values(clickCounters7SecondTime).join(',') + '\n';
+            csv += Object.values(clickCounters5SecondTime).join(',') + '\n'
 
             csv += 'Second-time appearance accumulated time taken to choose (in ms)' + ',';
             csv += Object.values(timeCountersSecondTime).join(',') + ',';
-            csv += Object.values(timeCounters2SecondTime).join(',') + ',';
             csv += Object.values(timeCounters3SecondTime).join(',') + ',';
-            csv += Object.values(timeCounters4SecondTime).join(',') + ',';
-            csv += Object.values(timeCounters5SecondTime).join(',') + ',';
-            csv += Object.values(timeCounters6SecondTime).join(',') + ',';
-            csv += Object.values(timeCounters7SecondTime).join(',') + '\n' + '\n';
+            csv += Object.values(timeCounters5SecondTime).join(',') + '\n'+ '\n';
 
             // Small comment: Can/might/should add average time taken to choose
 
