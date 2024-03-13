@@ -286,37 +286,6 @@
             // Shuffle the array of objects
             shuffle(sectionObjects);
 
-<<<<<<< Updated upstream
-            // Extract the shuffled sections and description types from the array of objects
-            const shuffledSections = sectionObjects.map(object => object.section);
-            const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
-
-            shuffledSections.forEach((section, index) => {
-                const div = document.createElement('div');
-                div.className = 'card p-3 search-container border mb-2 w-auto';
-
-                // Create a new div to act as a flex container for the anchor, paragraph, and image
-                const flexDiv = document.createElement('div');
-                flexDiv.style.display = 'flex';
-                flexDiv.style.alignItems = 'flex-start'; // Align items vertically in the center
-
-                // Create a new div to contain the anchor and paragraph
-                const contentDiv = document.createElement('div');
-
-                const h3 = document.createElement('h3');
-                const a = document.createElement('a');
-                a.className = 'search-title';
-                a.href = '#';
-                a.textContent = descriptionTitles[sections.indexOf(shuffledSections[index])]; // Set the title according to the description type // Set the title according to the description type
-
-                h3.appendChild(a);
-                contentDiv.appendChild(h3); // Append the anchor to the content div
-                contentDiv.appendChild(section); // Append the section to the content div
-                
-                flexDiv.appendChild(contentDiv); // Append the content div to the flex container
-
-                //const descriptionKey = `${descriptionType}-${a.textContent}`;
-=======
             //if (screens < 10){
                 // Shuffle the array of objects
             shuffle(sectionObjects);
@@ -348,7 +317,6 @@
                 contentDiv.appendChild(section); // Append the section to the content div
                 
                 flexDiv.appendChild(contentDiv); // Append the content div to the flex container
->>>>>>> Stashed changes
                 
                 const descriptionType = shuffledDescriptionTypes[index];
                 const descriptionKey = `${descriptionType}-${a.textContent}`;
@@ -356,42 +324,17 @@
                 // Use the descriptionKey to track the picture presence per topic
                 if (prevPicturePresence[descriptionKey] === undefined) {
                     if (Math.random() < 0.5) {
-<<<<<<< Updated upstream
-                        appendPicture(flexDiv, result.image);
-                        prevPicturePresence[descriptionKey] = true;
-=======
                         prevPicturePresence[descriptionKey] = true;
                         appendPicture(flexDiv, result.image);
->>>>>>> Stashed changes
                     } else {
                         prevPicturePresence[descriptionKey] = false;
                     }
                 } else if (prevPicturePresence[descriptionKey]) {
                     prevPicturePresence[descriptionKey] = false;
                 } else {
-<<<<<<< Updated upstream
-                    appendPicture(flexDiv, result.image);
-                    prevPicturePresence[descriptionKey] = true;
-                }
-                // // Randomize the picture presence for the first set, then complement it for the next set
-                // if (prevPicturePresence[index] === null) {
-                //     if (Math.random() < 0.5) {
-                //         appendPicture(flexDiv, result.image);
-                //         prevPicturePresence[index] = true;
-                //     } else {
-                //         prevPicturePresence[index] = false;
-                //     }
-                // } else if (prevPicturePresence[index]) {
-                //     prevPicturePresence[index] = false;
-                // } else {
-                //     appendPicture(flexDiv, result.image);
-                //     prevPicturePresence[index] = true;
-                // }
-=======
                     prevPicturePresence[descriptionKey] = true;
                     appendPicture(flexDiv, result.image);
                 }
->>>>>>> Stashed changes
 
                 div.appendChild(flexDiv); // Append the flex container to the main div
                 container.appendChild(div);
@@ -412,15 +355,6 @@
                     
                     // if (repeat == 0), do calculations for the first time SET 1 & SET 2 was shown to user
                     // Get the result id and description type
-<<<<<<< Updated upstream
-                    const searchQueryTopic = data.results[currentIndex].title;
-                    const descriptionTypes = shuffledDescriptionTypes[index];
-                    const photoPresence = !prevPicturePresence[index];
-                    const photoPresenceSimple = photoPresence ? 'pic' : 'noPic'; // converts TRUE and FALSE with 'pic' and 'noPic' respectively
-
-                    // KNOWN ISSUE: There is a bug where the first time and second time are not being calculated correctly.
-                        // Screen 11, despite being "secondTime", is becoming part of "firstTime".
-=======
                     let searchQueryTopic = data.results[currentIndex].title;
                     let descriptionTypes = shuffledDescriptionTypes[index];
                     let resultTitle = data.results[currentIndex]
@@ -433,7 +367,6 @@
                     let photoPresence = !prevPicturePresence[keyIndex];
                     let photoPresenceSimple = photoPresence ? 'pic' : 'noPic'; // converts TRUE and FALSE with 'pic' and 'noPic' respectively
 
->>>>>>> Stashed changes
                     if (screens < 10){
                         firstTime = true
                     } else if (screens >= 10 && screens < 20) {
@@ -903,8 +836,6 @@
 
             return array;
         }
-<<<<<<< Updated upstream
-=======
         // function shuffle2(array) {
         //     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -923,7 +854,6 @@
 
         //     return array;
         // }
->>>>>>> Stashed changes
     </script>
     </body>
 </html>
