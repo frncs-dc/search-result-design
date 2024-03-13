@@ -171,7 +171,7 @@
         let timeCounters6SecondTime= {};
         let timeCounters7SecondTime = {};
 
-        let prevPicturePresence = [null, null, null]; // Initial picture presence for paragraph, list, tab
+        let prevPicturePresence = []; // Initial picture presence for paragraph, list, tab
         
         function displayData() {
             // Clear the container; effectively removes the button
@@ -286,6 +286,7 @@
             // Shuffle the array of objects
             shuffle(sectionObjects);
 
+<<<<<<< Updated upstream
             // Extract the shuffled sections and description types from the array of objects
             const shuffledSections = sectionObjects.map(object => object.section);
             const shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
@@ -315,6 +316,39 @@
                 flexDiv.appendChild(contentDiv); // Append the content div to the flex container
 
                 //const descriptionKey = `${descriptionType}-${a.textContent}`;
+=======
+            //if (screens < 10){
+                // Shuffle the array of objects
+            shuffle(sectionObjects);
+
+            // Extract the shuffled sections and description types from the array of objects
+            let shuffledSections = sectionObjects.map(object => object.section);
+            let shuffledDescriptionTypes = sectionObjects.map(object => object.descriptionType);
+
+            shuffledSections.forEach((section, index) => {
+                const div = document.createElement('div');
+                div.className = 'card p-3 search-container border mb-2 w-auto';
+
+                // Create a new div to act as a flex container for the anchor, paragraph, and image
+                const flexDiv = document.createElement('div');
+                flexDiv.style.display = 'flex';
+                flexDiv.style.alignItems = 'flex-start'; // Align items vertically in the center
+
+                // Create a new div to contain the anchor and paragraph
+                const contentDiv = document.createElement('div');
+
+                const h3 = document.createElement('h3');
+                const a = document.createElement('a');
+                a.className = 'search-title';
+                a.href = '#';
+                a.textContent = descriptionTitles[sections.indexOf(shuffledSections[index])]; // Set the title according to the description type // Set the title according to the description type
+
+                h3.appendChild(a);
+                contentDiv.appendChild(h3); // Append the anchor to the content div
+                contentDiv.appendChild(section); // Append the section to the content div
+                
+                flexDiv.appendChild(contentDiv); // Append the content div to the flex container
+>>>>>>> Stashed changes
                 
                 const descriptionType = shuffledDescriptionTypes[index];
                 const descriptionKey = `${descriptionType}-${a.textContent}`;
@@ -322,14 +356,20 @@
                 // Use the descriptionKey to track the picture presence per topic
                 if (prevPicturePresence[descriptionKey] === undefined) {
                     if (Math.random() < 0.5) {
+<<<<<<< Updated upstream
                         appendPicture(flexDiv, result.image);
                         prevPicturePresence[descriptionKey] = true;
+=======
+                        prevPicturePresence[descriptionKey] = true;
+                        appendPicture(flexDiv, result.image);
+>>>>>>> Stashed changes
                     } else {
                         prevPicturePresence[descriptionKey] = false;
                     }
                 } else if (prevPicturePresence[descriptionKey]) {
                     prevPicturePresence[descriptionKey] = false;
                 } else {
+<<<<<<< Updated upstream
                     appendPicture(flexDiv, result.image);
                     prevPicturePresence[descriptionKey] = true;
                 }
@@ -347,6 +387,11 @@
                 //     appendPicture(flexDiv, result.image);
                 //     prevPicturePresence[index] = true;
                 // }
+=======
+                    prevPicturePresence[descriptionKey] = true;
+                    appendPicture(flexDiv, result.image);
+                }
+>>>>>>> Stashed changes
 
                 div.appendChild(flexDiv); // Append the flex container to the main div
                 container.appendChild(div);
@@ -364,9 +409,10 @@
                     event.preventDefault();
                     currentIndex = (currentIndex + 1) % data.results.length;
                     displayData();
-
+                    
                     // if (repeat == 0), do calculations for the first time SET 1 & SET 2 was shown to user
                     // Get the result id and description type
+<<<<<<< Updated upstream
                     const searchQueryTopic = data.results[currentIndex].title;
                     const descriptionTypes = shuffledDescriptionTypes[index];
                     const photoPresence = !prevPicturePresence[index];
@@ -374,15 +420,26 @@
 
                     // KNOWN ISSUE: There is a bug where the first time and second time are not being calculated correctly.
                         // Screen 11, despite being "secondTime", is becoming part of "firstTime".
+=======
+                    let searchQueryTopic = data.results[currentIndex].title;
+                    let descriptionTypes = shuffledDescriptionTypes[index];
+                    let resultTitle = data.results[currentIndex]
+
+
+                    let descriptionObject = data.results[currentIndex].description[descriptionTypes];
+                    // Now you can access the title from the description object
+                    let title = descriptionObject.title;
+                    let keyIndex = `${descriptionTypes}-${title}`;
+                    let photoPresence = !prevPicturePresence[keyIndex];
+                    let photoPresenceSimple = photoPresence ? 'pic' : 'noPic'; // converts TRUE and FALSE with 'pic' and 'noPic' respectively
+
+>>>>>>> Stashed changes
                     if (screens < 10){
                         firstTime = true
                     } else if (screens >= 10 && screens < 20) {
                         firstTime = false
                     }
-                    console.log(firstTime)
                     let firstTimeSimple = firstTime ? 'first' : 'second'; // converts TRUE and FALSE with 'first' and 'second' respectively
-                    console.log(firstTimeSimple)
-            
                     // Create a key for the counters object
                     //key1 is for each specific topic's result layout combination (taking into account whether it's the first time or second time seeing the layout)
                     const key = `${searchQueryTopic}-${descriptionTypes}-${photoPresenceSimple}-${firstTimeSimple}`;
@@ -562,13 +619,13 @@
                         if (!timeCounters7FirstTime[tkey7]) {
                             timeCounters7FirstTime[tkey7] = 0;
                         }
-                        timeCountersFirstTime[tkey]++;
-                        timeCounters2FirstTime[tkey2]++;
-                        timeCounters3FirstTime[tkey3]++;
-                        timeCounters4FirstTime[tkey4]++;
-                        timeCounters5FirstTime[tkey5]++;
-                        timeCounters6FirstTime[tkey6]++;
-                        timeCounters7FirstTime[tkey7]++;
+                        timeCountersFirstTime[tkey] += timeTaken;
+                        timeCounters2FirstTime[tkey2] += timeTaken;
+                        timeCounters3FirstTime[tkey3] += timeTaken
+                        timeCounters4FirstTime[tkey4] += timeTaken
+                        timeCounters5FirstTime[tkey5] += timeTaken
+                        timeCounters6FirstTime[tkey6] += timeTaken
+                        timeCounters7FirstTime[tkey7] += timeTaken
 
                         if (!timeCounters[tkey]) {
                             timeCounters[tkey] = 0;
@@ -591,13 +648,13 @@
                         if (!timeCounters7[tkey7]) {
                             timeCounters7[tkey7] = 0;
                         }
-                        timeCounters[tkey]++;
-                        timeCounters2[tkey2]++;
-                        timeCounters3[tkey3]++;
-                        timeCounters4[tkey4]++;
-                        timeCounters5[tkey5]++;
-                        timeCounters6[tkey6]++;
-                        timeCounters7[tkey7]++;
+                        timeCounters[tkey] += timeTaken;
+                        timeCounters2[tkey2] += timeTaken;
+                        timeCounters3[tkey3] += timeTaken;
+                        timeCounters4[tkey4] += timeTaken;
+                        timeCounters5[tkey5] += timeTaken;
+                        timeCounters6[tkey6] += timeTaken;
+                        timeCounters7[tkey7] += timeTaken;
                     } if (screens >= 10 && screens < 20) {
                         
                         if (!timeCountersSecondTime[tkey]) {
@@ -621,13 +678,13 @@
                         if (!timeCounters7SecondTime[tkey7]) {
                             timeCounters7SecondTime[tkey7] = 0;
                         }
-                        timeCountersSecondTime[tkey]++;
-                        timeCounters2SecondTime[tkey2]++;
-                        timeCounters3SecondTime[tkey3]++;
-                        timeCounters4SecondTime[tkey4]++;
-                        timeCounters5SecondTime[tkey5]++;
-                        timeCounters6SecondTime[tkey6]++;
-                        timeCounters7SecondTime[tkey7]++;
+                        timeCountersSecondTime[tkey] += timeTaken += timeTaken;
+                        timeCounters2SecondTime[tkey2] += timeTaken += timeTaken;
+                        timeCounters3SecondTime[tkey3] += timeTaken += timeTaken;
+                        timeCounters4SecondTime[tkey4] += timeTaken += timeTaken;
+                        timeCounters5SecondTime[tkey5] += timeTaken += timeTaken;
+                        timeCounters6SecondTime[tkey6] += timeTaken += timeTaken;
+                        timeCounters7SecondTime[tkey7] += timeTaken += timeTaken;
 
                         if (!timeCounters[tkey]) {
                             timeCounters[tkey] = 0;
@@ -650,13 +707,13 @@
                         if (!timeCounters7[tkey7]) {
                             timeCounters7[tkey7] = 0;
                         }
-                        timeCounters[tkey]++;
-                        timeCounters2[tkey2]++;
-                        timeCounters3[tkey3]++;
-                        timeCounters4[tkey4]++;
-                        timeCounters5[tkey5]++;
-                        timeCounters6[tkey6]++;
-                        timeCounters7[tkey7]++;
+                        timeCounters[tkey] += timeTaken;
+                        timeCounters2[tkey2] += timeTaken;
+                        timeCounters3[tkey3] += timeTaken;
+                        timeCounters4[tkey4] += timeTaken;
+                        timeCounters5[tkey5] += timeTaken;
+                        timeCounters6[tkey6] += timeTaken;
+                        timeCounters7[tkey7] += timeTaken;
                     }
 
                     // OLD CODE: Add the time taken to the counters
@@ -846,6 +903,27 @@
 
             return array;
         }
+<<<<<<< Updated upstream
+=======
+        // function shuffle2(array) {
+        //     var currentIndex = array.length, temporaryValue, randomIndex;
+
+        //     // While there remain elements to shuffle...
+        //     while (0 !== currentIndex) {
+
+        //         // Pick a remaining element...
+        //         randomIndex = Math.ceil(Math.random() * currentIndex);
+        //         currentIndex -= 1;
+
+        //         // And swap it with the current element.
+        //         temporaryValue = array[currentIndex];
+        //         array[currentIndex] = array[randomIndex];
+        //         array[randomIndex] = temporaryValue;
+        //     }
+
+        //     return array;
+        // }
+>>>>>>> Stashed changes
     </script>
     </body>
 </html>
