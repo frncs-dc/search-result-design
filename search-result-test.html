@@ -172,7 +172,8 @@
         let timeCounters7SecondTime = {};
 
         let prevPicturePresence = []; // Initial picture presence for paragraph, list, tab
-        
+        let prevPicturePresence2 = [];
+
         function displayData() {
             // Clear the container; effectively removes the button
             const container = document.querySelector('.results-container');
@@ -283,6 +284,8 @@
                 return { section: section, descriptionType: descriptionTypes[index] };
             });
 
+
+            // SET A AND SET B
             let shuffledSections
             let shuffledDescriptionTypes
             if(screens < 9){
@@ -339,8 +342,7 @@
                     container.appendChild(div);
                     
                 });
-            } else if(screens >= 9){
-                prevPicturePresence = []
+            } else if(screens >= 9){ // SET C AND SET D
                 // Shuffle the array of objects
                 array2 = shuffle(sectionObjects);
                 console.log("ARR2",array2)
@@ -376,17 +378,17 @@
                     const descriptionKey = `${descriptionType}-${a.textContent}`;
 
                     // Use the descriptionKey to track the picture presence per topic
-                    if (prevPicturePresence[descriptionKey] === undefined) {
+                    if (prevPicturePresence2[descriptionKey] === undefined) {
                         if (Math.random() < 0.5) {
-                            prevPicturePresence[descriptionKey] = true;
+                            prevPicturePresence2[descriptionKey] = true;
                             appendPicture(flexDiv, result.image);
                         } else {
-                            prevPicturePresence[descriptionKey] = false;
+                            prevPicturePresence2[descriptionKey] = false;
                         }
-                    } else if (prevPicturePresence[descriptionKey]) {
-                        prevPicturePresence[descriptionKey] = false;
+                    } else if (prevPicturePresence2[descriptionKey]) {
+                        prevPicturePresence2[descriptionKey] = false;
                     } else {
-                        prevPicturePresence[descriptionKey] = true;
+                        prevPicturePresence2[descriptionKey] = true;
                         appendPicture(flexDiv, result.image);
                     }
 
@@ -406,22 +408,33 @@
             anchors.forEach((anchor, index) => {
                 anchor.addEventListener('click', (event) => {
                     event.preventDefault();
-                    currentIndex = (currentIndex + 1) % data.results.length;
-                    displayData();
-                    
                     // if (repeat == 0), do calculations for the first time SET 1 & SET 2 was shown to user
                     // Get the result id and description type
                     let searchQueryTopic = data.results[currentIndex].title;
                     let descriptionTypes = shuffledDescriptionTypes[index];
                     let resultTitle = data.results[currentIndex]
-
-
                     let descriptionObject = data.results[currentIndex].description[descriptionTypes];
                     // Now you can access the title from the description object
                     let title = descriptionObject.title;
+                    console.log("title", title)
                     let keyIndex = `${descriptionTypes}-${title}`;
-                    let photoPresence = !prevPicturePresence[keyIndex];
-                    let photoPresenceSimple = photoPresence ? 'pic' : 'noPic'; // converts TRUE and FALSE with 'pic' and 'noPic' respectively
+                    console.log("keyIndex", keyIndex)
+                    let photoPresence = prevPicturePresence[keyIndex];
+                    let photoPresence2 = prevPicturePresence2[keyIndex];
+                    console.log("photoPresence", photoPresence)
+                    console.log("photoPresence2", photoPresence2)
+                    let photoPresenceSimple = {}
+                    
+                    if(screens < 10){
+                        photoPresenceSimple = photoPresence ? 'pic' : 'noPic'
+                    } else if (screens >= 10){
+                        photoPresenceSimple = photoPresence2 ? 'pic' : 'noPic'
+                    }
+                    //let photoPresenceSimple = photoPresence ? 'pic' : 'noPic';
+                    currentIndex = (currentIndex + 1) % data.results.length;
+                    displayData();
+
+                     // converts TRUE and FALSE with 'pic' and 'noPic' respectively
 
                     if (screens < 10){
                         firstTime = true
@@ -441,7 +454,7 @@
                     //key5 is for each description type, regardless of photo presence and topic  (taking into account whether it's the first time or second time seeing the layout)
                     const key5 = `${descriptionTypes}-${firstTimeSimple}`;
                     //key6 is for each description type, regardless of photo presence and topic
-                    const key6 = `${descriptionTypes}`; 
+                    const key6 = `${descriptionTypes}`;
                     //key7 is for the photo presence, regardless of topic and description type
                     const key7 = `${photoPresenceSimple}`;
                     
@@ -468,6 +481,7 @@
                         if (!clickCounters7FirstTime[key7]) {
                             clickCounters7FirstTime[key7] = 0;
                         }
+
                         clickCountersFirstTime[key]++;
                         clickCounters2FirstTime[key2]++;
                         clickCounters3FirstTime[key3]++;
@@ -475,6 +489,9 @@
                         clickCounters5FirstTime[key5]++;
                         clickCounters6FirstTime[key6]++;
                         clickCounters7FirstTime[key7]++;
+
+                        console.log("key ctr1", clickCountersFirstTime[key], "key data", key);
+                        
 
                         if (!clickCounters[key]) {
                             clickCounters[key] = 0;
@@ -564,7 +581,7 @@
                         clickCounters7[key7]++;
                     }
                     
-                    
+                    // TIME COUNTING (How many seconds it took for a user to decide on a search result)
                     let clickTime = performance.now();
                     let timeTaken = clickTime - loadTime;
 
@@ -615,7 +632,6 @@
                         timeCounters5FirstTime[tkey5] += timeTaken
                         timeCounters6FirstTime[tkey6] += timeTaken
                         timeCounters7FirstTime[tkey7] += timeTaken
-
                         if (!timeCounters[tkey]) {
                             timeCounters[tkey] = 0;
                         }
@@ -637,13 +653,15 @@
                         if (!timeCounters7[tkey7]) {
                             timeCounters7[tkey7] = 0;
                         }
-                        timeCounters[tkey] += timeTaken;
-                        timeCounters2[tkey2] += timeTaken;
-                        timeCounters3[tkey3] += timeTaken;
-                        timeCounters4[tkey4] += timeTaken;
-                        timeCounters5[tkey5] += timeTaken;
-                        timeCounters6[tkey6] += timeTaken;
-                        timeCounters7[tkey7] += timeTaken;
+
+                        timeCounters[tkey] += timeCountersFirstTime[tkey];
+                        timeCounters2[tkey2] += timeCounters2FirstTime[tkey2];
+                        timeCounters3[tkey3] += timeCounters3FirstTime[tkey3];
+                        timeCounters4[tkey4] += timeCounters4FirstTime[tkey4];
+                        timeCounters5[tkey5] += timeCounters5FirstTime[tkey5];
+                        timeCounters6[tkey6] += timeCounters6FirstTime[tkey6];
+                        timeCounters7[tkey7] += timeCounters7FirstTime[tkey7];
+
                     } if (screens >= 10 && screens < 20) {
                         
                         if (!timeCountersSecondTime[tkey]) {
@@ -667,13 +685,13 @@
                         if (!timeCounters7SecondTime[tkey7]) {
                             timeCounters7SecondTime[tkey7] = 0;
                         }
-                        timeCountersSecondTime[tkey] += timeTaken += timeTaken;
-                        timeCounters2SecondTime[tkey2] += timeTaken += timeTaken;
-                        timeCounters3SecondTime[tkey3] += timeTaken += timeTaken;
-                        timeCounters4SecondTime[tkey4] += timeTaken += timeTaken;
-                        timeCounters5SecondTime[tkey5] += timeTaken += timeTaken;
-                        timeCounters6SecondTime[tkey6] += timeTaken += timeTaken;
-                        timeCounters7SecondTime[tkey7] += timeTaken += timeTaken;
+                        timeCountersSecondTime[tkey] += timeTaken;
+                        timeCounters2SecondTime[tkey2] += timeTaken;
+                        timeCounters3SecondTime[tkey3] += timeTaken;
+                        timeCounters4SecondTime[tkey4] += timeTaken;
+                        timeCounters5SecondTime[tkey5] += timeTaken;
+                        timeCounters6SecondTime[tkey6] += timeTaken;
+                        timeCounters7SecondTime[tkey7] += timeTaken;
 
                         if (!timeCounters[tkey]) {
                             timeCounters[tkey] = 0;
@@ -696,20 +714,15 @@
                         if (!timeCounters7[tkey7]) {
                             timeCounters7[tkey7] = 0;
                         }
-                        timeCounters[tkey] += timeTaken;
-                        timeCounters2[tkey2] += timeTaken;
-                        timeCounters3[tkey3] += timeTaken;
-                        timeCounters4[tkey4] += timeTaken;
-                        timeCounters5[tkey5] += timeTaken;
-                        timeCounters6[tkey6] += timeTaken;
-                        timeCounters7[tkey7] += timeTaken;
-                    }
 
-                    // OLD CODE: Add the time taken to the counters
-                    // timeCounters[tkey] += timeTaken;
-                    // timeCounters2[tkey2] += timeTaken;
-                    // timeCounters3[tkey3] += timeTaken;
-                    // timeCounters4[tkey4] += timeTaken;
+                        timeCounters[tkey] += timeCountersSecondTime[tkey];
+                        timeCounters2[tkey2] += timeCounters2SecondTime[tkey2];
+                        timeCounters3[tkey3] += timeCounters3SecondTime[tkey3];
+                        timeCounters4[tkey4] += timeCounters4SecondTime[tkey4];
+                        timeCounters5[tkey5] += timeCounters5SecondTime[tkey5];
+                        timeCounters6[tkey6] += timeCounters6SecondTime[tkey6];
+                        timeCounters7[tkey7] += timeCounters7SecondTime[tkey7];
+                    }
 
                     // Reset the load time
                     loadTime = performance.now();
@@ -717,51 +730,38 @@
 
                     console.log("screens: " + screens);
 
-                    if (screens >= 20) {
+                    if (screens == 20) {
+                        // if (!timeCounters[tkey]) {
+                        //     timeCounters[tkey] = 0;
+                        // }
+                        // if (!timeCounters2[tkey2]) {
+                        //     timeCounters2[tkey2] = 0;
+                        // }
+                        // if (!timeCounters3[tkey3]) {
+                        //     timeCounters3[tkey3] = 0;
+                        // }
+                        // if (!timeCounters4[tkey4]) {
+                        //     timeCounters4[tkey4] = 0;
+                        // }
+                        // if (!timeCounters5[tkey5]) {
+                        //     timeCounters5[tkey5] = 0;
+                        // }
+                        // if (!timeCounters6[tkey6]) {
+                        //     timeCounters6[tkey6] = 0;
+                        // }
+                        // if (!timeCounters7[tkey7]) {
+                        //     timeCounters7[tkey7] = 0;
+                        // }
+
+                        // timeCounters[tkey] = timeCountersFirstTime[tkey] + timeCountersSecondTime[tkey];
+                        // timeCounters2[tkey2] = timeCounters2FirstTime[tkey2] + timeCounters2SecondTime[tkey2];
+                        // timeCounters3[tkey3] = timeCounters3FirstTime[tkey3] + timeCounters3SecondTime[tkey3];
+                        // timeCounters4[tkey4] = timeCounters4FirstTime[tkey4] + timeCounters4SecondTime[tkey4];
+                        // timeCounters5[tkey5] = timeCounters5FirstTime[tkey5] + timeCounters5SecondTime[tkey5];
+                        // timeCounters6[tkey6] = timeCounters6FirstTime[tkey6] + timeCounters6SecondTime[tkey6];
+                        // timeCounters7[tkey7] = timeCounters7FirstTime[tkey7] + timeCounters7SecondTime[tkey7];
+
                         autoDownload();
-                        clickCounters[key] /= 4;
-                        clickCounters2[key2] /= 4;
-                        clickCounters3[key3] /= 4;
-                        clickCounters4[key4] /= 4;
-                        clickCounters5[key5] /= 4;
-                        clickCounters6[key6] /= 4;
-                        clickCounters7[key7] /= 4;
-                        clickCountersFirstTime[key] /= 2;
-                        clickCounters2FirstTime[key2] /= 2;
-                        clickCounters3FirstTime[key3] /= 2;
-                        clickCounters4FirstTime[key4] /= 2;
-                        clickCounters5FirstTime[key5] /= 2;
-                        clickCounters6FirstTime[key6] /= 2;
-                        clickCounters7FirstTime[key7] /= 2;
-                        clickCountersSecondTime[key] /= 2;
-                        clickCounters2SecondTime[key2] /= 2;
-                        clickCounters3SecondTime[key3] /= 2;
-                        clickCounters4SecondTime[key4] /= 2;
-                        clickCounters5SecondTime[key5] /= 2;
-                        clickCounters6SecondTime[key6] /= 2;
-                        clickCounters7SecondTime[key7] /= 2;
-                        
-                        timeCounters[tkey] /= 4;
-                        timeCounters2[tkey2] /= 4;
-                        timeCounters3[tkey3] /= 4;
-                        timeCounters4[tkey4] /= 4;
-                        timeCounters5[tkey5] /= 4;
-                        timeCounters6[tkey6] /= 4;
-                        timeCounters7[tkey7] /= 4;
-                        timeCountersFirstTime[tkey] /= 2;
-                        timeCounters2FirstTime[tkey2] /= 2;
-                        timeCounters3FirstTime[tkey3] /= 2;
-                        timeCounters4FirstTime[tkey4] /= 2;
-                        timeCounters5FirstTime[tkey5] /= 2;
-                        timeCounters6FirstTime[tkey6] /= 2;
-                        timeCounters7FirstTime[tkey7] /= 2;
-                        timeCountersSecondTime[tkey] /= 2;
-                        timeCounters2SecondTime[tkey2] /= 2;
-                        timeCounters3SecondTime[tkey3] /= 2;
-                        timeCounters4SecondTime[tkey4] /= 2;
-                        timeCounters5SecondTime[tkey5] /= 2;
-                        timeCounters6SecondTime[tkey6] /= 2;
-                        timeCounters7SecondTime[tkey7] /= 2;
 
                         alert("THE EXPERIMENT HAS ENDED! THANK YOU FOR YOUR PARTICIPATION!");
                         return;
@@ -893,24 +893,6 @@
 
             return array;
         }
-        // function shuffle2(array) {
-        //     var currentIndex = array.length, temporaryValue, randomIndex;
-
-        //     // While there remain elements to shuffle...
-        //     while (0 !== currentIndex) {
-
-        //         // Pick a remaining element...
-        //         randomIndex = Math.ceil(Math.random() * currentIndex);
-        //         currentIndex -= 1;
-
-        //         // And swap it with the current element.
-        //         temporaryValue = array[currentIndex];
-        //         array[currentIndex] = array[randomIndex];
-        //         array[randomIndex] = temporaryValue;
-        //     }
-
-        //     return array;
-        // }
     </script>
     </body>
 </html>
